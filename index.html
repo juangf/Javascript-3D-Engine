@@ -1,0 +1,22 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Javascript 3D Engine</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+        <meta name="format-detection" content="telephone=no">
+
+        <script src="dist/js/3dengine.js"></script>
+    </head>
+<body>
+	<canvas id="canvas" width="100%" height="100%">Your browser does not have canvas support :(</canvas>
+
+	<script type="text/javascript">
+		//Create Engine instance
+		var eng = new Engine();
+
+		//Set Engine HTML5 canvas
+		eng.setCanvas(document.getElementById('canvas'));
+	</script>
+</body>
+</html>
