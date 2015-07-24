@@ -5,11 +5,20 @@
         <title>Javascript 3D Engine</title>
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
         <meta name="format-detection" content="telephone=no">
+        <style type="text/css">
+        	html, body{
+        		width: 100%;
+        		height: 100%;
+        		margin: 0;
+        		padding: 0;
+        		overflow: hidden;
+        	}
+        </style>
 
         <script src="dist/js/3dengine.js"></script>
     </head>
 <body>
-	<canvas id="canvas" width="100%" height="100%">Your browser does not have canvas support :(</canvas>
+	<canvas id="canvas" width="1000px" height="1000px">Your browser does not have canvas support :(</canvas>
 
 	<script type="text/javascript">
 		//Create Engine instance
@@ -17,6 +26,18 @@
 
 		//Set Engine HTML5 canvas
 		eng.setCanvas(document.getElementById('canvas'));
+
+		//Draw poligon test
+		var p = new Poligon();
+
+			p
+			.addVertex($V([10,10,10]))
+			.addVertex($V([200,10,10]))
+			.addVertex($V([200,200,200]))
+			.addVertex($V([10,200,200]));
+
+		eng.drawPoligon(p);
+
 	</script>
 </body>
 </html>
