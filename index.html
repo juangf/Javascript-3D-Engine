@@ -14,30 +14,10 @@
         		overflow: hidden;
         	}
         </style>
-
-        <script src="dist/js/3dengine.js"></script>
     </head>
-<body>
-	<canvas id="canvas" width="1000px" height="1000px">Your browser does not have canvas support :(</canvas>
-
-	<script type="text/javascript">
-		//Create Engine instance
-		var eng = new Engine();
-
-		//Set Engine HTML5 canvas
-		eng.setCanvas(document.getElementById('canvas'));
-
-		//Draw poligon test
-		var p = new Poligon();
-
-		p
-		.addVertex($V([10,10,10]))
-		.addVertex($V([200,10,10]))
-		.addVertex($V([200,200,200]))
-		.addVertex($V([10,200,200]));
-
-		eng.drawPoligon(p);
-
-	</script>
-</body>
+	<body>
+		<canvas id="canvas" width="1000px" height="1000px">Your browser does not have canvas support :(</canvas>
+	</body>
+	<script type="text/javascript" src="js/engine.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 </html>
