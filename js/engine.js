@@ -181,7 +181,7 @@ class Object3D {
 class Scene {
     constructor(config) {
         this.id      = config.id;
-        this.name 	 = config.name;
+        this.name    = config.name;
         this.camera  = config.camera;
         this.objects = {};
     }
@@ -206,7 +206,7 @@ class Scene {
 
 class Camera {
     constructor(config) {
-        this.id 	  = config.id;
+        this.id       = config.id;
         this.position = config.position;
     }
     getId() {
@@ -244,7 +244,7 @@ class Engine {
     }
 
     renderScene(sceneId) {
-        let scene 	= this.scenes[sceneId];
+        let scene   = this.scenes[sceneId];
         let objects = scene.getObjects();
         let camera  = scene.getCamera();
 
@@ -278,7 +278,7 @@ class Engine {
         let indexs      = poligon.getIndexs();
         let numindexs   = indexs.length;
         let camPosition = camera.getPosition();
-        let p0    		= points[indexs[0]];
+        let p0          = points[indexs[0]];
 
         this.ctx.beginPath();
         this.ctx.moveTo(
@@ -310,7 +310,7 @@ class Engine {
     }
 
     drawObject(object, camera) {
-        let pos 	   = object.getPosition();
+        let pos        = object.getPosition();
         let drawPoints = object.getOptions().drawPoints;
         let geometry   = object.getGeometry();
         let poligons   = geometry.getPoligons();
