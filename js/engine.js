@@ -90,7 +90,7 @@ class Plane extends Geometry {
 class Sphere extends Geometry {
     constructor(radius, space) {
         super();
-        let index 	 = 0;
+        let index    = 0;
         let startInd = 0;
 
         this.addPoint(new Point(0, 0, radius));
