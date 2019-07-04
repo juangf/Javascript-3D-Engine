@@ -21,10 +21,11 @@ let scn = new Scene({
 scn
     .addObject(new Object3D({
         id: 'cube1',
-        position: new Point(100, 100, 0),
+        position: new Point(120, 80, 0),
         geometry: new Cube(100),
         options: {
-            drawPoints: true
+            drawPoints: true,
+            drawNormals: true
         }
     }))
     .addObject(new Object3D({
@@ -38,29 +39,37 @@ scn
     .addObject(new Object3D({
         id: 'cube3',
         position: new Point(-200, -130, 0),
-        geometry: new Cube(70)
+        geometry: new Cube(70),
+        options: {
+            drawNormals: true
+        }
     }))
     .addObject(new Object3D({
         id: 'plane1',
-        position: new Point(-200, 200, 0),
-        geometry: new Plane(150),
+        position: new Point(-260, 200, 0),
+        geometry: new Plane(250),
         options: {
             drawPoints: true
         }
     }))
     .addObject(new Object3D({
         id: 'plane2',
-        position: new Point(100, -200, 0),
-        geometry: new Plane(150),
-        options: {
-            drawPoints: true
-        }
+        position: new Point(-100, -240, 0),
+        geometry: new Plane(150)
     }))
     .addObject(new Object3D({
         id: 'sphere1',
-        position: new Point(140, 0, 0),
-        geometry: new Sphere(50, 30)
-    }));
+        position: new Point(140, -100, 0),
+        geometry: new Sphere(50, 20),
+        options: {
+            drawNormals: true
+        }
+    }))
+    .addObject(new Object3D({
+        id: 'sphere2',
+        position: new Point(-180, 10, 0),
+        geometry: new Sphere(24, 30)
+    }))
 
 eng
     .addScene(scn)
