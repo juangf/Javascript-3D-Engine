@@ -7,9 +7,11 @@ let eng = new Engine({
     canvas: cnv
 });
 
+let cameraPosition = new Point(0, 0, 0);
+
 let cam = new Camera({
     id: 'cam1',
-    position: new Point(10, 50, 0)
+    position: cameraPosition
 });
 
 let scn = new Scene({
@@ -77,3 +79,40 @@ scn
 eng
     .addScene(scn)
     .renderScene('scn1');
+
+
+window.onkeydown = (e => {
+    let updateScene = cameraPosition => {
+        cam.setPosition(cameraPosition);
+        eng.renderScene('scn1');
+    };
+
+    switch(e.keyCode) {
+        case 37: // Left
+        case 65: // A
+            cameraPosition.setCoords(cameraPosition.getX() - 10, cameraPosition.getY(), cameraPosition.getZ());
+            updateScene(cameraPosition);
+            break;
+        case 39: // Right
+        case 68: // D
+            cameraPosition.setCoords(cameraPosition.getX() + 10, cameraPosition.getY(), cameraPosition.getZ());
+            updateScene(cameraPosition);
+            break;
+        case 38: // Up
+            cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY() + 10, cameraPosition.getZ());
+            updateScene(cameraPosition);
+            break;
+        case 40: // Down
+            cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY() - 10, cameraPosition.getZ());
+            updateScene(cameraPosition);
+            break;
+        case 87: // w
+            cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ() - 10);
+            updateScene(cameraPosition);
+            break;
+        case 83: // s
+            cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ() + 10);
+            updateScene(cameraPosition);
+            break;
+    }
+});
