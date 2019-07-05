@@ -486,9 +486,7 @@ class Engine {
         let transforms = object.getTransforms();
 
         // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
-
-        let transformsMatrix = Matrix.multiply(new Matrix(), camera.getMatrix());
-        transformsMatrix = Matrix.multiply(transformsMatrix, transforms.scale);
+        let transformsMatrix = Matrix.multiply(camera.getMatrix(), transforms.scale);
 
         poligons.forEach(p => {
             this.drawPoligon(p, pos, points, transformsMatrix, options.drawPoints, options.drawNormals);

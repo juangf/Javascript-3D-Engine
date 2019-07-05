@@ -9,7 +9,7 @@ let eng = new Engine({
 
 let cam = new Camera({
     id: 'cam1',
-    position: new Point(0, 50, 0)
+    position: new Point(10, 50, 0)
 });
 
 let scn = new Scene({
