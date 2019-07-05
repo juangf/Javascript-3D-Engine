@@ -21,8 +21,8 @@ let scn = new Scene({
 scn
     .addObject(new Object3D({
         id: 'cube1',
-        position: new Point(200, 0, 0),
-        geometry: new Cube(200),
+        position: new Point(130, 100, 0),
+        geometry: new Cube(100),
         options: {
             drawPoints: true,
             drawNormals: true

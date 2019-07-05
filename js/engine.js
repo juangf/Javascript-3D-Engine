@@ -5,14 +5,14 @@ class Matrix {
         0, 0, 1, Z
         0, 0, 0, W
     */
-    constructor(size = 4) {
+    constructor(size = 4, scale = 1) {
         // Create the identity matrix by default
         this.values = [];
         this.size   = 4;
         for (let i = 0; i < size; i++) {
             let row = [];
             for (let j = 0; j < size; j++) {
-                row.push(j === i ? 1 : 0);
+                row.push(j === i ? scale : 0);
             }
             this.values.push(row);
         }
@@ -161,13 +161,15 @@ class Cube extends Geometry {
     */
     constructor(size) {
         super();
-        this.addPoint(new Point(0, 0, 0));
-        this.addPoint(new Point(size, 0, 0));
-        this.addPoint(new Point(size, size, 0));
-        this.addPoint(new Point(0, size, 0));
-        this.addPoint(new Point(size, 0, size));
-        this.addPoint(new Point(0, 0, size));
-        this.addPoint(new Point(0, size, size));
+        size = size / 2;
+
+        this.addPoint(new Point(-size, -size, -size));
+        this.addPoint(new Point(size, -size, -size));
+        this.addPoint(new Point(size, size, -size));
+        this.addPoint(new Point(-size, size, -size));
+        this.addPoint(new Point(size, -size, size));
+        this.addPoint(new Point(-size, -size, size));
+        this.addPoint(new Point(-size, size, size));
         this.addPoint(new Point(size, size, size));
 
         this.addPoligon(new Poligon([0, 1, 2, 3]));
@@ -260,10 +262,14 @@ class Object3D {
         this.id         = config.id;
         this.geometry   = config.geometry;
         this.position   = config.position;
-        this.transforms = []
         this.options    = Object.assign({
             drawPoints: false
         }, config.options);
+        this.transforms = {
+            translation : new Matrix(),
+            scale       : new Matrix(),
+            rotation    : new Matrix()
+        }
     }
     getId() {
         return this.id;
@@ -280,6 +286,12 @@ class Object3D {
     setOptions(options) {
         this.options = Object.assign(this.options, options);
         return this;
+    }
+    getTransforms() {
+        return this.transforms;
+    }
+    scale(value) {
+        this.transforms.scale = new Matrix(4, value);
     }
 }
 
@@ -366,7 +378,7 @@ class Engine {
         this.renderLoop(objects, camera);
         setInterval(e => {
             this.renderLoop(objects, camera);
-        }, 100);
+        }, 1000);
         return this;
     }
 
@@ -378,8 +390,8 @@ class Engine {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawPoint(point, position, camera, text = false) {
-        let p = Point.multiplyMatrix(Point.add(point, position), camera.getMatrix());
+    drawPoint(point, position, transformsMatrix, text = false) {
+        let p = Point.multiplyMatrix(Point.add(point, position), transformsMatrix);
         let x = this.projection('x', p.getX(), p.getZ());
         let y = this.projection('y', p.getY(), p.getZ());
         
@@ -394,7 +406,7 @@ class Engine {
         return this;
     }
 
-    drawPoligonNormal(poligon, position, points, camera) {
+    drawPoligonNormal(poligon, position, points, transformsMatrix) {
         let indexs  = poligon.getIndexs();
         let p0      = points[indexs[0]];
         let p1      = points[indexs[1]];
@@ -403,7 +415,7 @@ class Engine {
         let ab2     = Point.substract(p1, p2);
         let ab1xab2 = Point.dotProduct(ab1, ab2);
         let pDir    = Point.multiply(Point.normalize(ab1xab2), 25);
-        let p       = Point.multiplyMatrix(Point.add(p1, position), camera.getMatrix());
+        let p       = Point.multiplyMatrix(Point.add(p1, position), transformsMatrix);
 
         this.ctx.beginPath();
         this.ctx.moveTo(
@@ -419,13 +431,13 @@ class Engine {
         this.ctx.strokeStyle = '#000000';
     }
 
-    drawPoligon(poligon, position, points, camera, drawPoints = false, drawNormals = false) {
+    drawPoligon(poligon, position, points, transformsMatrix, drawPoints = false, drawNormals = false) {
         let indexs    = poligon.getIndexs();
         let numindexs = indexs.length;
         let p0        = points[indexs[0]];
 
-        if (this.isVisible(poligon, camera)) {
-            let p = Point.multiplyMatrix(Point.add(p0, position), camera.getMatrix());
+        if (this.isVisible(poligon, transformsMatrix)) {
+            let p = Point.multiplyMatrix(Point.add(p0, position), transformsMatrix);
             this.ctx.beginPath();
             this.ctx.moveTo(
                 this.projection('x', p.getX(), p.getZ()),
@@ -433,7 +445,7 @@ class Engine {
             );
 
             for (let i = 1; i < numindexs; i++) {
-                let p = Point.multiplyMatrix(Point.add(points[indexs[i]], position), camera.getMatrix());
+                let p = Point.multiplyMatrix(Point.add(points[indexs[i]], position), transformsMatrix);
                 this.ctx.lineTo(
                     this.projection('x', p.getX(), p.getZ()),
                     this.projection('y', p.getY(), p.getZ())
@@ -448,12 +460,12 @@ class Engine {
             this.ctx.stroke();
 
             if (drawNormals) {
-                this.drawPoligonNormal(poligon, position, points, camera);
+                this.drawPoligonNormal(poligon, position, points, transformsMatrix);
             }
 
             if (drawPoints || this.config.drawPoints) {
                 points.forEach((p, i) => {
-                    this.drawPoint(p, position, camera, i);
+                    this.drawPoint(p, position, transformsMatrix, i);
                 });
             }
         }
@@ -471,9 +483,15 @@ class Engine {
         let geometry   = object.getGeometry();
         let poligons   = geometry.getPoligons();
         let points     = geometry.getPoints();
+        let transforms = object.getTransforms();
+
+        // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
+
+        let transformsMatrix = Matrix.multiply(new Matrix(), camera.getMatrix());
+        transformsMatrix = Matrix.multiply(transformsMatrix, transforms.scale);
 
         poligons.forEach(p => {
-            this.drawPoligon(p, pos, points, camera, options.drawPoints, options.drawNormals);
+            this.drawPoligon(p, pos, points, transformsMatrix, options.drawPoints, options.drawNormals);
         });
         return this;
     }
