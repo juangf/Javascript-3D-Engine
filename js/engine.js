@@ -1,4 +1,10 @@
 class Matrix {
+    /*
+        1, 0, 0, X
+        0, 1, 0, Y
+        0, 0, 1, Z
+        0, 0, 0, W
+    */
     constructor(size = 4) {
         // Create the identity matrix by default
         this.values = [];
@@ -42,16 +48,21 @@ class Matrix {
 }
 
 class Point {
-    constructor(x, y, z) {
+    constructor(x, y, z, w = 1) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.w = w; // If the Vector is director, w = 0
     }
-    setCoords(x, y, z) {
+    setCoords(x, y, z, w = 1) {
         this.x = x;
         this.y = y; 
         this.z = z;
+        this.w = w;
         return this;
+    }
+    getCoords() {
+        return [this.x, this.y, this.z, this.w];
     }
     getX() {
         return this.x;
@@ -61,6 +72,9 @@ class Point {
     }
     getZ() {
         return this.z;
+    }
+    static add(p1, p2) {
+        return new Point(p2.getX() + p1.getX(), p2.getY() + p1.getY(), p2.getZ() + p1.getZ());
     }
     static substract(p1, p2) {
         return new Point(p2.getX() - p1.getX(), p2.getY() - p1.getY(), p2.getZ() - p1.getZ());
@@ -88,6 +102,21 @@ class Point {
         } else {
             return p;
         }
+    }
+    static multiplyMatrix(p, m) {
+        let size   = m.getSize();
+        let coords = p.getCoords();
+        let res    = [0, 0, 0];
+
+        for (let i = 0; i < size; i++) {
+            let sum = 0;
+            for (let j = 0; j < size; j++) {
+                sum += m.getValue(i, j) * coords[j];
+            }
+            res[i] = sum;
+        }
+
+        return new Point(res[0], res[1], res[2], res[3]);
     }
 }
 
@@ -283,7 +312,11 @@ class Scene {
 class Camera {
     constructor(config) {
         this.id       = config.id;
-        this.position = config.position;
+        this.position = new Point(0, 0, 0),
+        this.matrix   = new Matrix();
+        if (config.position) {
+            this.setPosition(config.position);
+        }
     }
     getId() {
         return this.id;
@@ -291,9 +324,15 @@ class Camera {
     getPosition() {
         return this.position;
     }
-    setPosition(position) {
-        this.position = position;
+    setPosition(p) {
+        this.position = p;
+        this.matrix.setValue(0, 3, p.getX());
+        this.matrix.setValue(1, 3, p.getY());
+        this.matrix.setValue(2, 3, p.getZ());
         return this;
+    }
+    getMatrix() {
+        return this.matrix;
     }
 }
 
@@ -327,23 +366,23 @@ class Engine {
         this.renderLoop(objects, camera);
         setInterval(e => {
             this.renderLoop(objects, camera);
-        }, 1000);
+        }, 100);
         return this;
     }
 
-    projection (coord, z) {
-        return (coord * 500) / (z + 500);
+    projection (axis, value, z) {
+        return (value * 500) / (z + 500) + (axis === 'x' ? this.canvas.width : this.canvas.height) / 2;
     }
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawPoint(point, origin = new Point(0, 0, 0), camera, text = false) {
-        let camPosition = camera.getPosition();
-        let x = this.projection(point.getX() + origin.getX(), point.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getX();
-        let y = this.projection(point.getY() + origin.getY(), point.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getY();
-
+    drawPoint(point, position, camera, text = false) {
+        let p = Point.multiplyMatrix(Point.add(point, position), camera.getMatrix());
+        let x = this.projection('x', p.getX(), p.getZ());
+        let y = this.projection('y', p.getY(), p.getZ());
+        
         this.ctx.beginPath();
         this.ctx.arc(x, y, 4, 0, Math.PI * 2, true);
         this.ctx.stroke();
@@ -355,7 +394,7 @@ class Engine {
         return this;
     }
 
-    drawPoligonNormal(poligon, points, origin, camera) {
+    drawPoligonNormal(poligon, position, points, camera) {
         let indexs  = poligon.getIndexs();
         let p0      = points[indexs[0]];
         let p1      = points[indexs[1]];
@@ -363,67 +402,65 @@ class Engine {
         let ab1     = Point.substract(p1, p0);
         let ab2     = Point.substract(p1, p2);
         let ab1xab2 = Point.dotProduct(ab1, ab2);
-        let pDir    = Point.multiply(Point.normalize(ab1xab2), 30);
-        let camPosition = camera.getPosition();
-        
+        let pDir    = Point.multiply(Point.normalize(ab1xab2), 25);
+        let p       = Point.multiplyMatrix(Point.add(p1, position), camera.getMatrix());
+
         this.ctx.beginPath();
         this.ctx.moveTo(
-            this.projection(p1.getX() + origin.getX(), p1.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getX(),
-            this.projection(p1.getY() + origin.getY(), p1.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getY()
+            this.projection('x', p.getX(), p.getZ()),
+            this.projection('y', p.getY(), p.getZ())
         );
         this.ctx.strokeStyle = '#FF0000';
         this.ctx.lineTo(
-            this.projection(p1.getX() + pDir.getX() + origin.getX(), p1.getZ() + pDir.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getX(),
-            this.projection(p1.getY() + pDir.getY() + origin.getY(), p1.getZ() + pDir.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getY()
+            this.projection('x', p.getX() + pDir.getX(), p.getZ() + pDir.getZ()),
+            this.projection('y', p.getY() + pDir.getY(), p.getZ() + pDir.getZ())
         );
         this.ctx.stroke();
         this.ctx.strokeStyle = '#000000';
     }
 
-    drawPoligon(poligon, points, origin = new Point(0, 0, 0), camera, drawPoints = false, drawNormals = false) {
-        let indexs      = poligon.getIndexs();
-        let numindexs   = indexs.length;
-        let camPosition = camera.getPosition();
-        let p0          = points[indexs[0]];
-        let p1          = points[indexs[1]];
-        let p2          = points[indexs[2]];
+    drawPoligon(poligon, position, points, camera, drawPoints = false, drawNormals = false) {
+        let indexs    = poligon.getIndexs();
+        let numindexs = indexs.length;
+        let p0        = points[indexs[0]];
 
-        if (this.isVisible(p2, p1, p0, origin, camPosition)) {
+        if (this.isVisible(poligon, camera)) {
+            let p = Point.multiplyMatrix(Point.add(p0, position), camera.getMatrix());
             this.ctx.beginPath();
             this.ctx.moveTo(
-                this.projection(p0.getX() + origin.getX(), p0.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getX(),
-                this.projection(p0.getY() + origin.getY(), p0.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getY()
+                this.projection('x', p.getX(), p.getZ()),
+                this.projection('y', p.getY(), p.getZ())
             );
 
             for (let i = 1; i < numindexs; i++) {
-                let p = points[indexs[i]];
+                let p = Point.multiplyMatrix(Point.add(points[indexs[i]], position), camera.getMatrix());
                 this.ctx.lineTo(
-                    this.projection(p.getX() + origin.getX(), p.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getX(),
-                    this.projection(p.getY() + origin.getY(), p.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getY()
+                    this.projection('x', p.getX(), p.getZ()),
+                    this.projection('y', p.getY(), p.getZ())
                 );
             }
 
             this.ctx.lineTo(
-                this.projection(p0.getX() + origin.getX(), p0.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getX(),
-                this.projection(p0.getY() + origin.getY(), p0.getZ() + origin.getZ() - camPosition.getZ()) + camPosition.getY()
+                this.projection('x', p.getX(), p.getZ()),
+                this.projection('y', p.getY(), p.getZ())
             );
             this.ctx.closePath();
             this.ctx.stroke();
 
             if (drawNormals) {
-                this.drawPoligonNormal(poligon, points, origin, camera);
+                this.drawPoligonNormal(poligon, position, points, camera);
             }
 
             if (drawPoints || this.config.drawPoints) {
                 points.forEach((p, i) => {
-                    this.drawPoint(p, origin, camera, i);
+                    this.drawPoint(p, position, camera, i);
                 });
             }
         }
         return this;
     }
 
-    isVisible(p1, p2, p3, origin, camPosition) {
+    isVisible(poligon, camera) {
         // @todo check poligon visibility
         return true;
     }
@@ -436,7 +473,7 @@ class Engine {
         let points     = geometry.getPoints();
 
         poligons.forEach(p => {
-            this.drawPoligon(p, points, pos, camera, options.drawPoints, options.drawNormals);
+            this.drawPoligon(p, pos, points, camera, options.drawPoints, options.drawNormals);
         });
         return this;
     }

@@ -9,20 +9,20 @@ let eng = new Engine({
 
 let cam = new Camera({
     id: 'cam1',
-    position: new Point(window.innerWidth / 2, window.innerHeight / 2, 0)
+    position: new Point(0, 50, 0)
 });
 
 let scn = new Scene({
     id: 'scn1',
     name: 'Testing Scene',
-    camera: cam 
+    camera: cam
 });
 
 scn
     .addObject(new Object3D({
         id: 'cube1',
-        position: new Point(120, 80, 0),
-        geometry: new Cube(100),
+        position: new Point(200, 0, 0),
+        geometry: new Cube(200),
         options: {
             drawPoints: true,
             drawNormals: true
@@ -55,7 +55,10 @@ scn
     .addObject(new Object3D({
         id: 'plane2',
         position: new Point(-100, -240, 0),
-        geometry: new Plane(150)
+        geometry: new Plane(150),
+        options: {
+            drawPoints: true
+        }
     }))
     .addObject(new Object3D({
         id: 'sphere1',
@@ -69,7 +72,7 @@ scn
         id: 'sphere2',
         position: new Point(-180, 10, 0),
         geometry: new Sphere(24, 30)
-    }))
+    }));
 
 eng
     .addScene(scn)
