@@ -8,7 +8,7 @@ class Engine {
       drawPoints: false
     }, config)
     this.canvas = this.config.canvas
-    this.ctx = canvas.getContext('2d')
+    this.ctx = this.canvas.getContext('2d')
     this.scenes = {}
   }
 
@@ -126,7 +126,7 @@ class Engine {
     return this
   }
 
-  isVisible (poligon, camera) {
+  isVisible (polygon, camera) {
     // @todo check poligon visibility
     return true
   }
