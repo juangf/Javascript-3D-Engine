@@ -1,6 +1,19 @@
+// Core.
+import Engine from './engine/Engine.js';
+import Object3D from './engine/Object3D.js';
+import Point from './engine/Point.js';
+import Camera from './engine/Camera.js';
+import Scene from './engine/Scene.js';
+
+// Figures.
+import PyramidSquare from './figures/PyramidSquare.js';
+import Cube from './figures/Cube.js';
+import Plane from './figures/Plane.js';
+import Sphere from './figures/Sphere.js';
+
 let cnv = document.getElementById('canvas');
 
-cnv.width  = window.innerWidth;
+cnv.width = window.innerWidth;
 cnv.height = window.innerHeight;
 
 let eng = new Engine({
@@ -74,12 +87,20 @@ scn
         id: 'sphere2',
         position: new Point(-180, 10, 0),
         geometry: new Sphere(24, 30)
+    }))
+    .addObject(new Object3D({
+        id: 'pyramid_square',
+        position: new Point(-110, 80, 90),
+        geometry: new PyramidSquare(100, 100, 100),
+        options: {
+            drawPoints: true,
+            drawNormals: true
+        }
     }));
 
 eng
     .addScene(scn)
     .renderScene('scn1');
-
 
 window.onkeydown = (e => {
     let updateScene = cameraPosition => {
@@ -87,7 +108,7 @@ window.onkeydown = (e => {
         eng.renderScene('scn1');
     };
 
-    switch(e.keyCode) {
+    switch (e.keyCode) {
         case 37: // Left
         case 65: // A
             cameraPosition.setCoords(cameraPosition.getX() - 10, cameraPosition.getY(), cameraPosition.getZ());
@@ -106,11 +127,11 @@ window.onkeydown = (e => {
             cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY() - 10, cameraPosition.getZ());
             updateScene(cameraPosition);
             break;
-        case 87: // w
+        case 87: // W
             cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ() - 10);
             updateScene(cameraPosition);
             break;
-        case 83: // s
+        case 83: // S
             cameraPosition.setCoords(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ() + 10);
             updateScene(cameraPosition);
             break;
