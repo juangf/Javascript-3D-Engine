@@ -1,33 +1,33 @@
 class Scene {
 
-  constructor (config) {
-    this.id = config.id
-    this.name = config.name
-    this.camera = config.camera
-    this.objects = {}
-  }
+    constructor(config) {
+        this.id = config.id;
+        this.name = config.name;
+        this.camera = config.camera;
+        this.objects = {};
+    }
 
-  addObject (obj) {
-    this.objects[obj.id] = obj
-    return this
-  }
+    addObject(obj) {
+        this.objects[obj.id] = obj;
+        return this;
+    }
 
-  removeObject (objectId) {
-    delete this.objects[objectId]
-    return this
-  }
+    removeObject(objectId) {
+        delete this.objects[objectId];
+        return this;
+    }
 
-  getObject (objectId) {
-    return this.objects[objectId]
-  }
+    getObject(objectId) {
+        return this.objects[objectId];
+    }
 
-  getObjects () {
-    return this.objects
-  }
+    getObjects() {
+        return this.objects;
+    }
 
-  getCamera () {
-    return this.camera
-  }
+    getCamera() {
+        return this.camera;
+    }
 }
 
-export default Scene
+export default Scene;

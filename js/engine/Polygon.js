@@ -1,12 +1,12 @@
 class Polygon {
 
-  constructor (indexs = []) {
-    this.indexs = indexs
-  }
+    constructor(indexs = []) {
+        this.indexs = indexs;
+    }
 
-  getIndexs () {
-    return this.indexs
-  }
+    getIndexs() {
+        return this.indexs;
+    }
 }
 
-export default Polygon
+export default Polygon;
