@@ -1,5 +1,7 @@
 import Matrix from './Matrix.js';
 import Point from './Point.js';
+import Scene from "./Scene.js";
+import {DEFAULT_REFRESH_TIME} from "./Constants.js";
 
 class Engine {
 
@@ -10,6 +12,8 @@ class Engine {
         this.canvas = this.config.canvas;
         this.ctx = this.canvas.getContext('2d');
         this.scenes = {};
+        this.currentScene = null;
+        this.interval = null;
     }
 
     renderLoop(objects, camera) {
@@ -21,7 +25,17 @@ class Engine {
 
     addScene(scene) {
         this.scenes[scene.id] = scene;
+
+        // First scene is the current scene (by default).
+        if (Object.keys(this.scenes).length === 1) {
+            this.setCurrentScene(scene.id);
+        }
+
         return this;
+    }
+
+    render() {
+        return this.renderScene(this.currentScene);
     }
 
     renderScene(sceneId) {
@@ -29,10 +43,14 @@ class Engine {
         let objects = scene.getObjects();
         let camera = scene.getCamera();
 
-        this.renderLoop(objects, camera);
-        setInterval(e => {
+        this
+            .renderLoop(objects, camera)
+            .clear();
+
+        this.interval = setInterval(e => {
             this.renderLoop(objects, camera);
-        }, 1000);
+        }, DEFAULT_REFRESH_TIME);
+
         return this;
     }
 
@@ -44,7 +62,7 @@ class Engine {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawPoint(point, position, transformsMatrix, text = false) {
+    drawPoint(point, position, transformsMatrix, text = '') {
         let p = Point.multiplyMatrix(Point.add(point, position), transformsMatrix);
         let x = this.projection('x', p.getX(), p.getZ());
         let y = this.projection('y', p.getY(), p.getZ());
@@ -53,7 +71,7 @@ class Engine {
         this.ctx.arc(x, y, 4, 0, Math.PI * 2, true);
         this.ctx.stroke();
 
-        if (text !== false) {
+        if (text !== '') {
             this.ctx.font = '10px Verdana';
             this.ctx.strokeText(text, x + 4, y - 4);
         }
@@ -145,6 +163,24 @@ class Engine {
         polygons.forEach(p => {
             this.drawPolygon(p, pos, points, transformsMatrix, options.drawPoints, options.drawNormals);
         });
+        return this;
+    }
+
+    setCurrentScene(id) {
+        if (this.currentScene !== id && this.scenes[id] instanceof Scene) {
+            this.currentScene = id;
+            this.clear();
+        }
+
+        return this;
+    }
+
+    clear() {
+        if (this.interval !== null) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
+
         return this;
     }
 }
