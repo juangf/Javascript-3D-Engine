@@ -14,12 +14,12 @@ class Geometry {
     return this.points
   }
 
-  addPoligon (poligon) {
-    this.poligons.push(poligon)
+  addPolygon (polygon) {
+    this.poligons.push(polygon)
     return this
   }
 
-  getPoligons () {
+  getPolygon () {
     return this.poligons
   }
 }

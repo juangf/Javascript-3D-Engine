@@ -1,5 +1,5 @@
 import Point from '../engine/Point.js'
-import Poligon from '../engine/Poligon.js'
+import Polygon from '../engine/Polygon.js'
 import Geometry from '../engine/Geometry.js'
 
 class Sphere extends Geometry {
@@ -12,11 +12,11 @@ class Sphere extends Geometry {
     this.addPoint(new Point(0, 0, radius))
 
     for (let j = 0; j < 360 / space - 1; j++) {
-      this.addPoligon(new Poligon([0, index + 1, index + 2]))
+      this.addPolygon(new Polygon([0, index + 1, index + 2]))
       index++
     }
 
-    this.addPoligon(new Poligon([0, index + 1, 1]))
+    this.addPolygon(new Polygon([0, index + 1, 1]))
 
     index = 1
 
@@ -34,14 +34,14 @@ class Sphere extends Geometry {
 
         if (i > 0) {
           if (j < 360 / space - 1) {
-            this.addPoligon(new Poligon([
+            this.addPolygon(new Polygon([
               index,
               index + 360 / space,
               index + 360 / space + 1,
               index + 1
             ]))
           } else {
-            this.addPoligon(new Poligon([
+            this.addPolygon(new Polygon([
               index,
               index + 360 / space,
               startInd + 360 / space,
@@ -59,11 +59,11 @@ class Sphere extends Geometry {
     startInd = index
 
     for (let j = 0; j < 360 / space - 1; j++) {
-      this.addPoligon(new Poligon([startInd, index - 1, index - 2]))
+      this.addPolygon(new Polygon([startInd, index - 1, index - 2]))
       index--
     }
 
-    this.addPoligon(new Poligon([startInd, index - 1, startInd - 1]))
+    this.addPolygon(new Polygon([startInd, index - 1, startInd - 1]))
   }
 }
 

@@ -1,5 +1,5 @@
 import Point from '../engine/Point.js'
-import Poligon from '../engine/Poligon.js'
+import Polygon from '../engine/Polygon.js'
 import Geometry from '../engine/Geometry.js'
 
 /**
@@ -24,11 +24,11 @@ class PyramidSquare extends Geometry {
       .addPoint(new Point(-(w / 2), (h / 2), (d / 2)))
 
     this
-      .addPoligon(new Poligon([1, 2, 3, 4]))
-      .addPoligon(new Poligon([0, 1]))
-      .addPoligon(new Poligon([0, 2]))
-      .addPoligon(new Poligon([0, 3]))
-      .addPoligon(new Poligon([0, 4]))
+      .addPolygon(new Polygon([1, 2, 3, 4]))
+      .addPolygon(new Polygon([0, 1]))
+      .addPolygon(new Polygon([0, 2]))
+      .addPolygon(new Polygon([0, 3]))
+      .addPolygon(new Polygon([0, 4]))
   }
 }
 

@@ -1,4 +1,4 @@
-class Poligon {
+class Polygon {
 
   constructor (indexs = []) {
     this.indexs = indexs
@@ -9,4 +9,4 @@ class Poligon {
   }
 }
 
-export default Poligon
+export default Polygon

@@ -1,5 +1,5 @@
 import Point from '../engine/Point.js'
-import Poligon from '../engine/Poligon.js'
+import Polygon from '../engine/Polygon.js'
 import Geometry from '../engine/Geometry.js'
 
 class Plane extends Geometry {
@@ -10,7 +10,7 @@ class Plane extends Geometry {
     this.addPoint(new Point(size, 0, size));
     this.addPoint(new Point(size, 0, 0));
 
-    this.addPoligon(new Poligon([0, 1, 2, 3]));
+    this.addPolygon(new Polygon([0, 1, 2, 3]));
   }
 }
 

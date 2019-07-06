@@ -60,8 +60,8 @@ class Engine {
     return this
   }
 
-  drawPoligonNormal (poligon, position, points, transformsMatrix) {
-    let indexs = poligon.getIndexs()
+  drawPolygonNormal (polygon, position, points, transformsMatrix) {
+    let indexs = polygon.getIndexs()
     let p0 = points[indexs[0]]
     let p1 = points[indexs[1]]
     let p2 = points[indexs[2]]
@@ -85,12 +85,12 @@ class Engine {
     this.ctx.strokeStyle = '#000000'
   }
 
-  drawPoligon (poligon, position, points, transformsMatrix, drawPoints = false, drawNormals = false) {
-    let indexs = poligon.getIndexs()
+  drawPolygon (polygon, position, points, transformsMatrix, drawPoints = false, drawNormals = false) {
+    let indexs = polygon.getIndexs()
     let numindexs = indexs.length
     let p0 = points[indexs[0]]
 
-    if (this.isVisible(poligon, transformsMatrix)) {
+    if (this.isVisible(polygon, transformsMatrix)) {
       let p = Point.multiplyMatrix(Point.add(p0, position), transformsMatrix)
       this.ctx.beginPath()
       this.ctx.moveTo(
@@ -114,7 +114,7 @@ class Engine {
       this.ctx.stroke()
 
       if (drawNormals) {
-        this.drawPoligonNormal(poligon, position, points, transformsMatrix)
+        this.drawPolygonNormal(polygon, position, points, transformsMatrix)
       }
 
       if (drawPoints || this.config.drawPoints) {
@@ -135,15 +135,15 @@ class Engine {
     let pos = object.getPosition()
     let options = object.getOptions()
     let geometry = object.getGeometry()
-    let poligons = geometry.getPoligons()
+    let polygons = geometry.getPolygon()
     let points = geometry.getPoints()
     let transforms = object.getTransforms()
 
     // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
     let transformsMatrix = Matrix.multiply(camera.getMatrix(), transforms.scale)
 
-    poligons.forEach(p => {
-      this.drawPoligon(p, pos, points, transformsMatrix, options.drawPoints, options.drawNormals)
+    polygons.forEach(p => {
+      this.drawPolygon(p, pos, points, transformsMatrix, options.drawPoints, options.drawNormals)
     })
     return this
   }
