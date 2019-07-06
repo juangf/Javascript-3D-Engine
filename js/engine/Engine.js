@@ -21,6 +21,8 @@ class Engine {
         Object.keys(objects).forEach(key => {
             this.drawObject(objects[key], camera);
         });
+
+        return this;
     }
 
     addScene(scene) {
@@ -45,7 +47,7 @@ class Engine {
 
         this
             .renderLoop(objects, camera)
-            .clear();
+            .clearScene();
 
         this.interval = setInterval(e => {
             this.renderLoop(objects, camera);
@@ -169,13 +171,13 @@ class Engine {
     setCurrentScene(id) {
         if (this.currentScene !== id && this.scenes[id] instanceof Scene) {
             this.currentScene = id;
-            this.clear();
+            this.clearScene();
         }
 
         return this;
     }
 
-    clear() {
+    clearScene() {
         if (this.interval !== null) {
             clearInterval(this.interval);
             this.interval = null;
