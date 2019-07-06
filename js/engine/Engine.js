@@ -57,7 +57,7 @@ class Engine {
     }
 
     projection(axis, value, z) {
-        return (value * 500) / (z + 500) + (axis === 'x' ? this.canvas.width : this.canvas.height) / 2;
+        return (value * 700) / (z + 700) + (axis === 'x' ? this.canvas.width : this.canvas.height) / 2;
     }
 
     clearCanvas() {
