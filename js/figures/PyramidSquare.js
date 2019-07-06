@@ -25,10 +25,10 @@ class PyramidSquare extends Geometry {
 
     this
       .addPolygon(new Polygon([1, 2, 3, 4]))
-      .addPolygon(new Polygon([0, 1]))
-      .addPolygon(new Polygon([0, 2]))
-      .addPolygon(new Polygon([0, 3]))
-      .addPolygon(new Polygon([0, 4]))
+      .addPolygon(new Polygon([0, 1, 2]))
+      .addPolygon(new Polygon([0, 2, 3]))
+      .addPolygon(new Polygon([0, 3, 4]))
+      .addPolygon(new Polygon([0, 4, 1]))
   }
 }
 

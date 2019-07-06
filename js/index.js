@@ -93,7 +93,8 @@ scn
     position: new Point(-110, 80, 90),
     geometry: new PyramidSquare(100, 100, 100),
     options: {
-      drawPoints: true
+      drawPoints: true,
+      drawNormals: true
     }
   }));
 
