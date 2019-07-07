@@ -1,7 +1,6 @@
 import Matrix from './Matrix.js';
 import Point from './Point.js';
 import Scene from "./Scene.js";
-import {DEFAULT_REFRESH_TIME} from "./Constants.js";
 
 class Engine {
 
@@ -14,6 +13,7 @@ class Engine {
         this.scenes = {};
         this.currentScene = null;
         this.interval = null;
+        this.requestAfRef = null;
     }
 
     renderLoop(objects, camera) {
@@ -21,7 +21,9 @@ class Engine {
         Object.keys(objects).forEach(key => {
             this.drawObject(objects[key], camera);
         });
-
+        this.requestAfRef = requestAnimationFrame(timestamp => {
+            this.renderLoop(objects, camera);
+        });
         return this;
     }
 
@@ -36,28 +38,36 @@ class Engine {
         return this;
     }
 
-    render() {
-        return this.renderScene(this.currentScene);
-    }
-
     renderScene(sceneId) {
         let scene = this.scenes[sceneId];
         let objects = scene.getObjects();
         let camera = scene.getCamera();
 
-        this
-            .renderLoop(objects, camera)
-            .clearScene();
-
-        this.interval = setInterval(e => {
-            this.renderLoop(objects, camera);
-        }, DEFAULT_REFRESH_TIME);
+        this.renderLoop(objects, camera);
 
         return this;
     }
 
+    startRender() {
+        this.renderScene(this.currentScene);
+        return this;
+    }
+
+    stopRender() {
+        if (this.requestAfRef) {
+            cancelAnimationFrame(this.requestAfRef);
+            this.requestAfRef = null;
+        }
+        return this;
+    }
+
+    restarRender() {
+        this.stopRender();
+        this.startRender();
+    }
+
     projection(axis, value, z) {
-        return (value * 500) / (z + 500) + (axis === 'x' ? this.canvas.width : this.canvas.height) / 2;
+        return (value * 700) / (z + 700) + (axis === 'x' ? this.canvas.width : this.canvas.height) / 2;
     }
 
     clearCanvas() {
@@ -171,16 +181,9 @@ class Engine {
     setCurrentScene(id) {
         if (this.currentScene !== id && this.scenes[id] instanceof Scene) {
             this.currentScene = id;
-            this.clearScene();
-        }
-
-        return this;
-    }
-
-    clearScene() {
-        if (this.interval !== null) {
-            clearInterval(this.interval);
-            this.interval = null;
+            if (this.requestAfRef) {
+                this.restarRender();
+            }
         }
 
         return this;

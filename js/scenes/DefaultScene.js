@@ -46,16 +46,14 @@ class DefaultScene extends Scene
                 position: new Point(-260, 200, 0),
                 geometry: new Plane(250),
                 options: {
-                    drawPoints: true
+                    drawPoints: true,
+                    drawNormals: true
                 }
             }))
             .addObject(new Object3D({
                 id: 'plane2',
                 position: new Point(-100, -240, 0),
-                geometry: new Plane(150),
-                options: {
-                    drawPoints: true
-                }
+                geometry: new Plane(150, 5)
             }))
             .addObject(new Object3D({
                 id: 'sphere1',

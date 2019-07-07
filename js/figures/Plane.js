@@ -3,14 +3,19 @@ import Polygon from '../engine/Polygon.js';
 import Geometry from '../engine/Geometry.js';
 
 class Plane extends Geometry {
-    constructor(size) {
+    constructor(size, space = 1) {
         super();
-        this.addPoint(new Point(0, 0, 0));
-        this.addPoint(new Point(0, 0, size));
-        this.addPoint(new Point(size, 0, size));
-        this.addPoint(new Point(size, 0, 0));
+        size = size / space;
 
-        this.addPolygon(new Polygon([0, 1, 2, 3]));
+        for (let i = 0, b = 0; i <= space; i++, b += space + 1) {
+            for (let j = 0; j <= space; j++) {
+                this.addPoint(new Point(j * size, 0, i * size));
+                if (j < space && i < space) {
+                    let bj = b + j;
+                    this.addPolygon(new Polygon([bj, bj + space + 1, bj + space + 2, bj + 1]));
+                }
+            }
+        }
     }
 }
 

@@ -17,7 +17,7 @@ let cnv = document.getElementById('canvas');
 cnv.width = window.innerWidth;
 cnv.height = window.innerHeight;
 
-let eng = new Engine({
+window.eng = new Engine({
     canvas: cnv
 });
 
@@ -34,12 +34,11 @@ let castleScene = new CastleScene(0, 0, 0, cam);
 eng
     .addScene(homeScene)
     .addScene(castleScene)
-    .render();
+    .startRender();
 
 window.onkeydown = (e => {
     let updateScene = cameraPosition => {
         cam.setPosition(cameraPosition);
-        eng.render();
     };
 
     switch (e.keyCode) {
@@ -75,11 +74,9 @@ window.onkeydown = (e => {
             break;
         case KEY_1:
             eng.setCurrentScene(homeScene.id);
-            updateScene(cameraPosition);
             break;
         case KEY_2:
             eng.setCurrentScene(castleScene.id);
-            updateScene(cameraPosition);
             break;
     }
 });
