@@ -29,7 +29,7 @@ let cam = new Camera({
 });
 
 let homeScene = new DefaultScene(cam);
-let castleScene = new CastleScene(cam);
+let castleScene = new CastleScene(0, 0, 0, cam);
 
 eng
     .addScene(homeScene)
