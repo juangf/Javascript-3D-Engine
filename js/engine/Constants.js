@@ -1,5 +1,4 @@
 // Engine.
-export const DEFAULT_REFRESH_TIME = 1000;
 export const DEFAULT_MOVE_VELOCITY = 10;
 
 // Camera.
