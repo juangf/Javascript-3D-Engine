@@ -12,7 +12,6 @@ class Engine {
         this.ctx = this.canvas.getContext('2d');
         this.scenes = {};
         this.currentScene = null;
-        this.interval = null;
         this.requestAfRef = null;
     }
 
@@ -61,7 +60,7 @@ class Engine {
         return this;
     }
 
-    restarRender() {
+    restartRender() {
         this.stopRender();
         this.startRender();
     }
@@ -182,7 +181,7 @@ class Engine {
         if (this.currentScene !== id && this.scenes[id] instanceof Scene) {
             this.currentScene = id;
             if (this.requestAfRef) {
-                this.restarRender();
+                this.restartRender();
             }
         }
 
