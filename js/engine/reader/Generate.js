@@ -4,10 +4,24 @@ import Point from "../Point.js";
 import Polygon from "../Polygon.js";
 import Geometry from "../../engine/Geometry.js";
 
-class Parser {
-    constructor(file) {
+class Generate {
+
+    /**
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @param {string} file
+     * @param {number} size
+     * @returns {Object3D}
+     */
+    constructor(x, y, z, file, size = 100) {
+        this.point = {x: x, y: y, z: z};
+        this.size = size || 100;
+        this.file = file || null;
+
         let loader = new Loader();
-        this.raw = loader.load(file);
+        this.raw = loader.load(this.file);
 
         return this.parse();
     }
@@ -40,12 +54,17 @@ class Parser {
             });
         }
 
+        let name = this.raw.match(/^o (\S+)/gm);
+        if (name) {
+            obj.name = name[0].split(" ")[1];
+        }
+
         this.obj = obj;
         this.createObject();
 
         return new Object3D({
-            id: 'test',
-            position: new Point(0,0,0),
+            id: this.obj.name,
+            position: new Point(this.point.x, this.point.y, this.point.z),
             geometry: this.object,
             options: {
                 drawPoints: true,
@@ -58,13 +77,13 @@ class Parser {
         this.object = new Geometry();
         if (this.obj !== {}) {
             this.obj.vertices.forEach(function (element) {
-                this.object.addPoint(new Point(element[0] * 100, element[1] * 100, element[2] * 100));
+                this.object.addPoint(new Point(element[0] * this.size, element[1] * this.size, element[2] * this.size));
             }, this);
             this.obj.faces.forEach(function (element) {
-                this.object.addPolygon(new Polygon(element));
+                this.object.addPolygon(new Polygon(element.reverse()));
             }, this);
         }
     }
 }
 
-export default Parser;
+export default Generate;

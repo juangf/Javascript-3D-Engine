@@ -4,9 +4,6 @@ import Point from "../engine/Point.js";
 import PyramidSquare from "../figures/PyramidSquare.js";
 import RegularPrism from "../figures/RegularPrism.js";
 
-// Objects.
-import Parser from '../engine/reader/Parser.js';
-
 /**
  * Scene with a castle.
  */
@@ -21,7 +18,7 @@ class CastleScene extends Scene {
      * @param {Camera} camera
      * @param {object} options
      */
-    /*constructor(x, y, z, camera, options = {}) {
+    constructor(x, y, z, camera, options = {}) {
         super({
             id: 'castle_scene',
             name: 'Castle',
@@ -188,21 +185,6 @@ class CastleScene extends Scene {
             }));
 
         return this;
-    }*/
-
-    constructor(x, y, z, camera, options = {}) {
-        super({
-            id: 'castle_scene',
-            name: 'Castle',
-            camera: camera,
-        });
-        this.cube()
-    }
-
-
-    cube() {
-        let cube = new Parser('./obj/cube.obj');
-        this.addObject(cube);
     }
 
 }
