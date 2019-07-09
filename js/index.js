@@ -10,7 +10,7 @@ import {KEY_1, KEY_2} from './engine/Constants.js';
 
 // Scenes.
 import DefaultScene from './scenes/DefaultScene.js';
-import PyramidScene from './scenes/PyramidScene.js';
+import CastleScene from './scenes/CastleScene.js';
 
 let cnv = document.getElementById('canvas');
 
@@ -29,11 +29,11 @@ let cam = new Camera({
 });
 
 let homeScene = new DefaultScene(cam);
-let pyramidScene = new PyramidScene(cam);
+let castleScene = new CastleScene(0, 0, 0, cam);
 
 eng
     .addScene(homeScene)
-    .addScene(pyramidScene)
+    .addScene(castleScene)
     .startRender();
 
 window.onkeydown = (e => {
@@ -76,7 +76,7 @@ window.onkeydown = (e => {
             eng.setCurrentScene(homeScene.id);
             break;
         case KEY_2:
-            eng.setCurrentScene(pyramidScene.id);
+            eng.setCurrentScene(castleScene.id);
             break;
     }
 });
