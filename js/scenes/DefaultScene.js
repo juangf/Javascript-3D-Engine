@@ -91,6 +91,8 @@ class DefaultScene extends Scene
         } else {
             this.alpha = 0;
         }
+
+        this.objects['cube3'].rotate('y', this.alpha, new Point(0, 0, 0));
         return this;
     }
 }
