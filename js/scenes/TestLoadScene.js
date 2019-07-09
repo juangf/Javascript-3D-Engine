@@ -17,10 +17,13 @@ class TestLoadScene extends Scene {
         let diamond = new Generate(150, 150, 150, 'resources/obj/diamond.obj');
         let icosahedron = new Generate(-150, -150, -150, 'resources/obj/icosahedron.obj');
         let teapot = new Generate(-200, 200, -200, 'resources/obj/teapot.obj', 50);
+        let shuttle = new Generate(200, 200, -200, 'resources/obj/shuttle.obj', 10);
+
         this.addObject(cube);
         this.addObject(diamond);
         this.addObject(icosahedron);
         this.addObject(teapot);
+        this.addObject(shuttle);
     }
 }
 

@@ -37,7 +37,7 @@ class Generate {
             });
         }
 
-        let facesMatches = this.raw.match(/^f ((\d+)((\/\d+)?)((\/\d+)?)( ?)){3}$/gm);
+        let facesMatches = this.raw.match(/^f(.*)([^\n]*\n+)/gm);
         if (facesMatches) {
             obj.faces = facesMatches.map(function(face) {
                 let faces = face.split(" ");
