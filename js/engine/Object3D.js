@@ -125,6 +125,7 @@ class Object3D {
         } else {
             axisTRot.MRotation = null;
         }
+        return this;
     }
 }
 
