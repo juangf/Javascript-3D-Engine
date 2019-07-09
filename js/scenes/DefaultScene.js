@@ -77,6 +77,21 @@ class DefaultScene extends Scene
                     drawNormals: true
                 }
             }));
+        
+        this.alpha = 0;
+    }
+    beforeRender() {
+        this.objects['cube1']
+            .rotate('x', this.alpha)
+            .rotate('y', this.alpha)
+            .rotate('z', this.alpha);
+
+        if (this.alpha < 360) {
+            this.alpha += 2;
+        } else {
+            this.alpha = 0;
+        }
+        return this;
     }
 }
 

@@ -17,6 +17,7 @@ class Engine {
 
     renderLoop(objects, camera) {
         this.clearCanvas();
+        this.scenes[this.currentScene].beforeRender();
         Object.keys(objects).forEach(key => {
             this.drawObject(objects[key], camera);
         });

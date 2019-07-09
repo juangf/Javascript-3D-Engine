@@ -28,6 +28,9 @@ class Scene {
     getCamera() {
         return this.camera;
     }
+    beforeRender() {
+        return this;
+    }
 }
 
 export default Scene;
