@@ -34,9 +34,9 @@ let castleScene = new CastleScene(0, 0, 0, cam);
 let wavesScene = new WavesScene(cam);
 
 eng
-    .addScene(wavesScene)
     .addScene(homeScene)
     .addScene(castleScene)
+    .addScene(wavesScene)
     .startRender();
 
 window.onkeydown = (e => {
