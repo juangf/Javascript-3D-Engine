@@ -80,3 +80,17 @@ window.onkeydown = (e => {
             break;
     }
 });
+
+let alpha = 0;
+setInterval(e => {
+    eng.scenes.scn1.getObjects()['cube1']
+        .rotate('x', alpha)
+        .rotate('y', alpha)
+        .rotate('z', alpha);
+
+    if (alpha < 360) {
+        alpha += 3;
+    } else {
+        alpha = 0;
+    }
+}, 50);
