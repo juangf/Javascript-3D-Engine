@@ -17,8 +17,8 @@ class Generate {
      */
     constructor(x, y, z, file, size = 100) {
         this.point = {x: x, y: y, z: z};
-        this.size = size || 100;
-        this.file = file || null;
+        this.size = size;
+        this.file = file;
 
         let loader = new Loader();
         this.raw = loader.load(this.file);
