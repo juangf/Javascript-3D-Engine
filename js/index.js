@@ -6,12 +6,13 @@ import Camera from './engine/Camera.js';
 // Constants.
 import {DEFAULT_MOVE_VELOCITY, DEFAULT_CAMERA_POINT} from './engine/Constants.js';
 import {KEY_W, KEY_A, KEY_S, KEY_D, KEY_UP, KEY_C, KEY_LEFT, KEY_DOWN, KEY_RIGHT} from './engine/Constants.js';
-import {KEY_1, KEY_2, KEY_3} from './engine/Constants.js';
+import {KEY_1, KEY_2, KEY_3, KEY_4} from './engine/Constants.js';
 
 // Scenes.
 import DefaultScene from './scenes/DefaultScene.js';
 import CastleScene from './scenes/CastleScene.js';
 import WavesScene from './scenes/WavesScene.js';
+import TestLoadScene from './scenes/TestLoadScene.js';
 
 let cnv = document.getElementById('canvas');
 
@@ -32,11 +33,13 @@ let cam = new Camera({
 let homeScene = new DefaultScene(cam);
 let castleScene = new CastleScene(0, 0, 0, cam);
 let wavesScene = new WavesScene(cam);
+let testLoadScene = new TestLoadScene(cam);
 
 eng
     .addScene(homeScene)
     .addScene(castleScene)
     .addScene(wavesScene)
+    .addScene(testLoadScene)
     .startRender();
 
 window.onkeydown = (e => {
@@ -83,6 +86,9 @@ window.onkeydown = (e => {
             break;
         case KEY_3:
             eng.setCurrentScene(wavesScene.id);
+            break;
+        case KEY_4:
+            eng.setCurrentScene(testLoadScene.id);
             break;
     }
 });
