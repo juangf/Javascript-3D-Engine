@@ -5,6 +5,8 @@ import Cube from "../figures/Cube.js";
 import Plane from "../figures/Plane.js";
 import Sphere from "../figures/Sphere.js";
 import PyramidSquare from "../figures/PyramidSquare.js";
+import Matrix from "../engine/Matrix.js";
+import Utils from "../engine/Utils.js";
 
 class DefaultScene extends Scene
 {
@@ -18,13 +20,21 @@ class DefaultScene extends Scene
         this
             .addObject(new Object3D({
                 id: 'cube1',
-                position: new Point(130, 100, 0),
-                geometry: new Cube(100),
+                position: new Point(0, 150, 300),
+                geometry: new Cube(300),
                 options: {
                     drawPoints: true,
                     drawNormals: true
                 }
             }))
+            .addObject(new Object3D({
+                id: 'plane1',
+                position: new Point(-500, 0, -500),
+                geometry: new Plane(1000, 20),
+                options: {
+                }
+            }));
+            /*
             .addObject(new Object3D({
                 id: 'cube2',
                 position: new Point(20, 30, 0),
@@ -76,12 +86,26 @@ class DefaultScene extends Scene
                     drawPoints: true,
                     drawNormals: true
                 }
-            }));
+            }));*/
         
-        this.alpha = 0;
+        // this.alpha = 0;
+        let wWm = window.innerWidth / 2;
+        let wHm = window.innerHeight / 2;
+
+        document.onmousemove =(e => {
+            let posX = e.clientX;
+            let posY = e.clientY;
+            let percX = posX / window.innerWidth;
+            let percY = posY / window.innerHeight;
+
+            let alpha = Utils.degToRad((percX - 0.5) * 90);
+            let beta = Utils.degToRad((percY - 0.5) * 90);
+            camera.setYaw(alpha);
+            camera.setPitch(beta);
+        });
     }
     beforeRender() {
-        this.objects['cube1']
+        /*this.objects['cube1']
             .rotate('x', this.alpha)
             .rotate('y', this.alpha)
             .rotate('z', this.alpha);
@@ -92,7 +116,7 @@ class DefaultScene extends Scene
             this.alpha = 0;
         }
 
-        this.objects['cube3'].rotate('y', this.alpha, new Point(0, 0, 0));
+        this.objects['cube3'].rotate('y', this.alpha, new Point(0, 0, 0));*/
         return this;
     }
 }

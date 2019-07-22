@@ -1,7 +1,7 @@
 import Matrix from './Matrix.js';
 import Point from './Point.js';
 import Scene from "./Scene.js";
-
+import Utils from './Utils.js';
 class Engine {
 
     constructor(config = {}) {
@@ -13,6 +13,12 @@ class Engine {
         this.scenes = {};
         this.currentScene = null;
         this.requestAfRef = null;
+        this.worldMatrix = new Matrix([
+            [1,  0, 0, 0],
+            [0,  -1, 0, 0],
+            [0,  0, 1, 0],
+            [0,  0, 0, 1]
+        ]);
     }
 
     renderLoop(objects, camera) {
@@ -99,11 +105,11 @@ class Engine {
         let p0 = points[indexs[0]];
         let p1 = points[indexs[1]];
         let p2 = points[indexs[2]];
-        let ab1 = Point.substract(p1, p0);
-        let ab2 = Point.substract(p1, p2);
+        let ab1 = Point.substract(p1, p2);
+        let ab2 = Point.substract(p1, p0);
         let ab1xab2 = Point.dotProduct(ab1, ab2);
         let pDir = Point.multiply(Point.normalize(ab1xab2), 25);
-        let p = p1
+        let p = p1;
 
         this.ctx.beginPath();
         this.ctx.moveTo(
@@ -122,38 +128,23 @@ class Engine {
     drawPolygon(polygon, position, points, transforms, transformsMatrix, drawPoints = false, drawNormals = false) {
         let indexs = polygon.getIndexs();
         let numindexs = indexs.length;
-        let p0 = points[indexs[0]];
         let transformedPoints = {};
 
         if (this.isVisible()) {
             drawPoints = drawPoints || this.config.drawPoints;
-            let p = Point.add(p0, position);
 
-            if (transforms.rotations.x.MRotation) {
-                p = this.rotatePointAroundAxis(p, transforms.rotations.x);
-            }
-            if (transforms.rotations.y.MRotation) {
-                p = this.rotatePointAroundAxis(p, transforms.rotations.y);
-            }
-            if (transforms.rotations.z.MRotation) {
-                p = this.rotatePointAroundAxis(p, transforms.rotations.z);
-            }
-            p = Point.multiplyMatrix(p, transformsMatrix);
-
-            if (drawPoints || drawNormals) {
-                transformedPoints[indexs[0]] = p;
-            }
-
-            this.ctx.beginPath();
-            this.ctx.moveTo(
-                this.projection('x', p.getX(), p.getZ()),
-                this.projection('y', p.getY(), p.getZ())
-            );
-
-            for (let i = 1; i < numindexs; i++) {
+            for (let i = 0; i < numindexs; i++) {
                 let p = Point.add(points[indexs[i]], position);
+                p = Point.multiplyMatrix(p, transformsMatrix);
 
-                if (transforms.rotations.x.MRotation) {
+                if (i === 0) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(
+                        this.projection('x', p.getX(), p.getZ()),
+                        this.projection('y', p.getY(), p.getZ())
+                    );
+                }
+                /*if (transforms.rotations.x.MRotation) {
                     p = this.rotatePointAroundAxis(p, transforms.rotations.x);
                 }
                 if (transforms.rotations.y.MRotation) {
@@ -161,10 +152,8 @@ class Engine {
                 }
                 if (transforms.rotations.z.MRotation) {
                     p = this.rotatePointAroundAxis(p, transforms.rotations.z);
-                }
-
-                p = Point.multiplyMatrix(p, transformsMatrix);
-
+                }*/
+                
                 if (drawPoints || drawNormals) {
                     transformedPoints[indexs[i]] = p;
                 }
@@ -175,10 +164,6 @@ class Engine {
                 );
             }
 
-            this.ctx.lineTo(
-                this.projection('x', p.getX(), p.getZ()),
-                this.projection('y', p.getY(), p.getZ())
-            );
             this.ctx.closePath();
             this.ctx.stroke();
 
@@ -210,8 +195,11 @@ class Engine {
         let transforms = object.getTransforms();
 
         // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
-        let transformsMatrix = Matrix.multiply(camera.getMatrix(), transforms.scale);
-        //transformsMatrix = Matrix.multiply(camera.getMatrix(), transforms.rotations.x);
+        let transformsMatrix = this.worldMatrix;
+
+        let cam = camera.getMatrix();//camera.fPSViewRH(Utils.degToRad(0), Utils.degToRad(0));
+
+        transformsMatrix = Matrix.multiply(this.worldMatrix, cam);
         
 
         polygons.forEach(p => {

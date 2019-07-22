@@ -2,7 +2,7 @@
 export const DEFAULT_MOVE_VELOCITY = 10;
 
 // Camera.
-export const DEFAULT_CAMERA_POINT = {x: 0, y: 0, z: 0};
+export const DEFAULT_CAMERA_POINT = {x: 0, y: 350, z: -700};
 
 // Keys.
 export const KEY_W = 87;
