@@ -17,11 +17,11 @@ class PyramidSquare extends Geometry {
     constructor(h, w, d) {
         super();
         this
-            .addPoint(new Point(0, -h / 2, 0))
-            .addPoint(new Point(w / 2, h / 2, d / 2))
-            .addPoint(new Point(w / 2, h / 2, -d / 2))
-            .addPoint(new Point(-w / 2, h / 2, -d / 2))
-            .addPoint(new Point(-w / 2, h / 2, d / 2));
+            .addPoint(new Point(0, h / 2, 0))
+            .addPoint(new Point(w / 2, -h / 2, d / 2))
+            .addPoint(new Point(w / 2, -h / 2, -d / 2))
+            .addPoint(new Point(-w / 2, -h / 2, -d / 2))
+            .addPoint(new Point(-w / 2, -h / 2, d / 2));
 
         this
             .addPolygon(new Polygon([3, 2, 1, 4]))
