@@ -1,7 +1,7 @@
 // Core.
 import Engine from './engine/Engine.js';
 import Point from './engine/Point.js';
-import FpCamera from './engine/camera/FpCamera.js';
+import FpCamera from './engine/Camera/FpCamera.js';
 
 // Constants.
 import {DEFAULT_MOVE_VELOCITY, DEFAULT_CAMERA_POINT} from './engine/Constants.js';
