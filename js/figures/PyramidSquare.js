@@ -24,11 +24,11 @@ class PyramidSquare extends Geometry {
             .addPoint(new Point(-w / 2, -h / 2, d / 2));
 
         this
-            .addPolygon(new Polygon([3, 2, 1, 4]))
-            .addPolygon(new Polygon([0, 1, 2]))
-            .addPolygon(new Polygon([0, 2, 3]))
-            .addPolygon(new Polygon([0, 3, 4]))
-            .addPolygon(new Polygon([0, 4, 1]));
+            .addPolygon(new Polygon([3, 4, 1, 2]))
+            .addPolygon(new Polygon([0, 2, 1]))
+            .addPolygon(new Polygon([0, 3, 2]))
+            .addPolygon(new Polygon([0, 4, 3]))
+            .addPolygon(new Polygon([0, 1, 4]));
     }
 }
 
