@@ -37,7 +37,6 @@ let testLoadScene = new TestLoadScene(cam);
 
 eng
     .addScene(homeScene)
-    .addScene(castleScene)
     .addScene(wavesScene)
     .addScene(testLoadScene)
     .startRender();
@@ -82,12 +81,9 @@ window.onkeydown = (e => {
             eng.setCurrentScene(homeScene.id);
             break;
         case KEY_2:
-            eng.setCurrentScene(castleScene.id);
-            break;
-        case KEY_3:
             eng.setCurrentScene(wavesScene.id);
             break;
-        case KEY_4:
+        case KEY_3:
             eng.setCurrentScene(testLoadScene.id);
             break;
     }
