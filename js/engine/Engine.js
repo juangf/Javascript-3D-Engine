@@ -196,11 +196,9 @@ class Engine {
 
         // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
         let transformsMatrix = this.worldMatrix;
-
-        let cam = camera.getMatrix();//camera.fPSViewRH(Utils.degToRad(0), Utils.degToRad(0));
+        let cam = camera.getMatrix();
 
         transformsMatrix = Matrix.multiply(this.worldMatrix, cam);
-        
 
         polygons.forEach(p => {
             this.drawPolygon(p, pos, points, transforms, transformsMatrix, options.drawPoints, options.drawNormals);
