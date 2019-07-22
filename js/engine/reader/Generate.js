@@ -77,7 +77,7 @@ class Generate {
         this.object = new Geometry();
         if (this.obj !== {}) {
             this.obj.vertices.forEach(function (element) {
-                this.object.addPoint(new Point(element[0] * this.size, element[1] * - this.size, element[2] * this.size));
+                this.object.addPoint(new Point(element[0] * this.size, element[1] * this.size, element[2] * this.size));
             }, this);
             this.obj.faces.forEach(function (element) {
                 this.object.addPolygon(new Polygon(element.reverse()));

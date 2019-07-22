@@ -1,7 +1,7 @@
 // Core.
 import Engine from './engine/Engine.js';
 import Point from './engine/Point.js';
-import Camera from './engine/Camera.js';
+import FpCamera from './engine/camera/FpCamera.js';
 
 // Constants.
 import {DEFAULT_MOVE_VELOCITY, DEFAULT_CAMERA_POINT} from './engine/Constants.js';
@@ -25,7 +25,7 @@ window.eng = new Engine({
 
 let cameraPosition = new Point(DEFAULT_CAMERA_POINT.x, DEFAULT_CAMERA_POINT.y, DEFAULT_CAMERA_POINT.z);
 
-let cam = new Camera({
+let cam = new FpCamera({
     id: 'cam1',
     position: cameraPosition
 });
@@ -37,7 +37,6 @@ let testLoadScene = new TestLoadScene(cam);
 
 eng
     .addScene(homeScene)
-    .addScene(castleScene)
     .addScene(wavesScene)
     .addScene(testLoadScene)
     .startRender();
@@ -82,12 +81,9 @@ window.onkeydown = (e => {
             eng.setCurrentScene(homeScene.id);
             break;
         case KEY_2:
-            eng.setCurrentScene(castleScene.id);
-            break;
-        case KEY_3:
             eng.setCurrentScene(wavesScene.id);
             break;
-        case KEY_4:
+        case KEY_3:
             eng.setCurrentScene(testLoadScene.id);
             break;
     }
