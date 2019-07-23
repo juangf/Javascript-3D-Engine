@@ -83,6 +83,16 @@ class Point {
 
         return new Point(res[0], res[1], res[2], res[3]);
     }
+
+    static angleBetween(v1, v2) {
+        var dot = this.dot(this.normalize(v1), this.normalize(v2));
+        var mod1 = this.length(v1);
+        var mod2 = this.length(v2);
+        var theta = dot / (mod1 * mod2);
+        if (theta < -1) { theta = -1; }
+        if (theta > 1) { theta = 1; }
+        return Math.acos(theta);
+      }
 }
 
 export default Point;
