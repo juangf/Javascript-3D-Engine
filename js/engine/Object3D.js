@@ -8,7 +8,8 @@ class Object3D {
         this.geometry = config.geometry;
         this.position = config.position;
         this.options = Object.assign({
-            drawPoints: false
+            drawPoints: false,
+            backfaceCulling: true
         }, config.options);
         this.transforms = {
             translation: new Matrix(),
