@@ -20,7 +20,10 @@ class DefaultScene extends Scene
             .addObject(new Object3D({
                 id: 'plane1',
                 position: new Point(-1000, 0, -500),
-                geometry: new Plane(2000, 20)
+                geometry: new Plane(2000, 20),
+                options: {
+                    backfaceCulling: false
+                }
             }))
             .addObject(new Object3D({
                 id: 'cube1',

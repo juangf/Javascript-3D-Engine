@@ -125,13 +125,25 @@ class Engine {
         this.ctx.strokeStyle = '#000000';
     }
 
-    drawPolygon(polygon, position, points, transforms, transformsMatrix, drawPoints = false, drawNormals = false) {
+    drawPolygon(polygon, position, points, transforms, transformsMatrix, drawPoints = false, drawNormals = false, backfaceCulling = true) {
         let indexs = polygon.getIndexs();
         let numindexs = indexs.length;
         let transformedPoints = {};
 
-        if (this.isVisible()) {
+        /**
+         * @todo refactorize the transformed points system
+         */
+        if (backfaceCulling) {
+            for (let i = 0; i < 3; i++) {
+                let p = Point.add(points[indexs[i]], position);
+                p = Point.multiplyMatrix(p, transformsMatrix);
+                transformedPoints[indexs[i]] = p;
+            }
+        }
+
+        if (!backfaceCulling || this.isVisible(transformedPoints[indexs[0]], transformedPoints[indexs[1]], transformedPoints[indexs[2]])) {
             drawPoints = drawPoints || this.config.drawPoints;
+            transformedPoints = {};
 
             for (let i = 0; i < numindexs; i++) {
                 let p = Point.add(points[indexs[i]], position);
@@ -144,16 +156,6 @@ class Engine {
                         this.projection('y', p.getY(), p.getZ())
                     );
                 }
-                /*if (transforms.rotations.x.MRotation) {
-                    p = this.rotatePointAroundAxis(p, transforms.rotations.x);
-                }
-                if (transforms.rotations.y.MRotation) {
-                    p = this.rotatePointAroundAxis(p, transforms.rotations.y);
-                }
-                if (transforms.rotations.z.MRotation) {
-                    p = this.rotatePointAroundAxis(p, transforms.rotations.z);
-                }*/
-                
                 if (drawPoints || drawNormals) {
                     transformedPoints[indexs[i]] = p;
                 }
@@ -181,9 +183,11 @@ class Engine {
         return this;
     }
 
-    isVisible() {
-        // @todo check poligon visibility
-        return true;
+    isVisible(p1, p2, p3) {
+        return (
+            (this.projection('x', p2.getX(), p2.getZ()) - this.projection('x', p1.getX(), p1.getZ())) * (this.projection('y', p3.getY(), p3.getZ()) - this.projection('y', p1.getY(), p1.getZ())) <
+            (this.projection('x', p3.getX(), p3.getZ()) - this.projection('x', p1.getX(), p1.getZ())) * (this.projection('y', p2.getY(), p2.getZ()) - this.projection('y', p1.getY(), p1.getZ()))
+        );
     }
 
     drawObject(object, camera) {
@@ -201,7 +205,7 @@ class Engine {
         transformsMatrix = Matrix.multiply(this.worldMatrix, cam);
 
         polygons.forEach(p => {
-            this.drawPolygon(p, pos, points, transforms, transformsMatrix, options.drawPoints, options.drawNormals);
+            this.drawPolygon(p, pos, points, transforms, transformsMatrix, options.drawPoints, options.drawNormals, options.backfaceCulling);
         });
         return this;
     }
