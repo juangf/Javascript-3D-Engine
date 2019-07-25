@@ -125,7 +125,7 @@ class Engine {
         this.ctx.strokeStyle = '#000000';
     }
 
-    drawPolygon(polygon, position, points, transforms, transformsMatrix, drawPoints = false, drawNormals = false, backfaceCulling = true) {
+    drawPolygon(camera, polygon, position, points, transforms, transformsMatrix, drawPoints = false, drawNormals = false, backfaceCulling = true) {
         let indexs = polygon.getIndexs();
         let numindexs = indexs.length;
         let transformedPoints = {};
@@ -148,6 +148,10 @@ class Engine {
             for (let i = 0; i < numindexs; i++) {
                 let p = Point.add(points[indexs[i]], position);
                 p = Point.multiplyMatrix(p, transformsMatrix);
+
+                if (p.getZ() > camera.getFar() || p.getZ() < camera.getNear()) {
+                    return this;
+                }
 
                 if (i === 0) {
                     this.ctx.beginPath();
@@ -205,7 +209,7 @@ class Engine {
         transformsMatrix = Matrix.multiply(this.worldMatrix, cam);
 
         polygons.forEach(p => {
-            this.drawPolygon(p, pos, points, transforms, transformsMatrix, options.drawPoints, options.drawNormals, options.backfaceCulling);
+            this.drawPolygon(camera, p, pos, points, transforms, transformsMatrix, options.drawPoints, options.drawNormals, options.backfaceCulling);
         });
         return this;
     }

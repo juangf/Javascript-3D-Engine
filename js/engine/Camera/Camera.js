@@ -8,6 +8,8 @@ class Camera {
         this.position = new Point(0, 190, -500);
         this.up       = new Point(0, 1, 0);
         this.front    = new Point(0, 0, 1);
+        this.far      = 5000;
+        this.near     = -650;
 
         if (config.position) {
             this.setPosition(config.position);
@@ -29,6 +31,14 @@ class Camera {
 
     getMatrix() {
         return new Matrix();
+    }
+
+    getFar() {
+        return this.far;
+    }
+
+    getNear() {
+        return this.near;
     }
 }
 
