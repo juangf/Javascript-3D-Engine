@@ -5,6 +5,7 @@ import Cube from "../figures/Cube.js";
 import Plane from "../figures/Plane.js";
 import Sphere from "../figures/Sphere.js";
 import PyramidSquare from "../figures/PyramidSquare.js";
+import Cone from "../figures/Cone.js";
 import Utils from "../engine/Utils.js";
 
 class DefaultScene extends Scene
@@ -55,6 +56,11 @@ class DefaultScene extends Scene
                     drawPoints: true,
                     drawNormals: true
                 }
+            }))
+            .addObject(new Object3D({
+                id: 'cone2',
+                position: new Point(400, 50, 600),
+                geometry: new Cone(200, 600, 20)
             }));
         
         let wWm = window.innerWidth / 2;
