@@ -18,11 +18,10 @@ class CastleScene extends Scene {
      * @param {Camera} camera
      * @param {object} options
      */
-    constructor(x, y, z, camera, options = {}) {
+    constructor(x, y, z, options = {}) {
         super({
             id: 'castle_scene',
-            name: 'Castle',
-            camera: camera,
+            name: 'Castle'
         });
 
         let size = 200;

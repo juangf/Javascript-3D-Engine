@@ -7,11 +7,10 @@ import Generate from '../engine/reader/Generate.js';
  * Scene with a castle.
  */
 class TestLoadScene extends Scene {
-    constructor(camera) {
+    constructor() {
         super({
             id: 'test_load_obj',
-            name: 'load_obj',
-            camera: camera,
+            name: 'load_obj'
         });
         let cube = new Generate(0, 0, 0, 'resources/obj/cube.obj');
         let diamond = new Generate(150, 150, 150, 'resources/obj/diamond.obj');

@@ -1,7 +1,8 @@
 // Core.
-import Engine from './engine/Engine.js';
+import Renderer from './engine/Renderer.js';
 import Point from './engine/Point.js';
 import FpCamera from './engine/Camera/FpCamera.js';
+import Utils from './engine/Utils.js'
 
 // Constants.
 import {DEFAULT_MOVE_VELOCITY, DEFAULT_CAMERA_POINT} from './engine/Constants.js';
@@ -14,36 +15,37 @@ import CastleScene from './scenes/CastleScene.js';
 import WavesScene from './scenes/WavesScene.js';
 import TestLoadScene from './scenes/TestLoadScene.js';
 
-let cnv = document.getElementById('canvas');
+let canvas = document.getElementById('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-cnv.width = window.innerWidth;
-cnv.height = window.innerHeight;
+let homeScene = new DefaultScene();
+let castleScene = new CastleScene(0, 0, 0);
+let wavesScene = new WavesScene();
+let testLoadScene = new TestLoadScene();
 
-window.eng = new Engine({
-    canvas: cnv
-});
+let cameraPosition = new Point(
+    DEFAULT_CAMERA_POINT.x,
+    DEFAULT_CAMERA_POINT.y,
+    DEFAULT_CAMERA_POINT.z
+);
 
-let cameraPosition = new Point(DEFAULT_CAMERA_POINT.x, DEFAULT_CAMERA_POINT.y, DEFAULT_CAMERA_POINT.z);
-
-let cam = new FpCamera({
+let camera = new FpCamera({
     id: 'cam1',
     position: cameraPosition
 });
 
-let homeScene = new DefaultScene(cam);
-let castleScene = new CastleScene(0, 0, 0, cam);
-let wavesScene = new WavesScene(cam);
-let testLoadScene = new TestLoadScene(cam);
+let renderer = new Renderer(canvas, camera, homeScene);
 
-eng
-    .addScene(homeScene)
-    .addScene(wavesScene)
-    .addScene(testLoadScene)
-    .startRender();
+let renderFn = timestamp => {
+    requestAnimationFrame(renderFn);
+    renderer.render();
+};
+renderFn();
 
 window.onkeydown = (e => {
     let updateScene = cameraPosition => {
-        cam.setPosition(cameraPosition);
+        camera.setPosition(cameraPosition);
     };
 
     switch (e.keyCode) {
@@ -78,13 +80,25 @@ window.onkeydown = (e => {
             updateScene(cameraPosition);
             break;
         case KEY_1:
-            eng.setCurrentScene(homeScene.id);
+            renderer.setScene(homeScene);
             break;
         case KEY_2:
-            eng.setCurrentScene(wavesScene.id);
+            renderer.setScene(wavesScene);
             break;
         case KEY_3:
-            eng.setCurrentScene(testLoadScene.id);
+            renderer.setScene(testLoadScene);
             break;
     }
+});
+
+document.onmousemove =(e => {
+    let posX = e.clientX;
+    let posY = e.clientY;
+    let percX = posX / window.innerWidth;
+    let percY = posY / window.innerHeight;
+
+    let alpha = Utils.degToRad((percX - 0.5) * 360);
+    let beta = Utils.degToRad((percY - 0.5) * 360);
+    camera.setYaw(alpha);
+    camera.setPitch(beta);
 });

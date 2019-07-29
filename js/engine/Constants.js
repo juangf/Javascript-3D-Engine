@@ -1,5 +1,5 @@
 // Engine.
-export const DEFAULT_MOVE_VELOCITY = 10;
+export const DEFAULT_MOVE_VELOCITY = 30;
 
 // Camera.
 export const DEFAULT_CAMERA_POINT = {x: 0, y: 540, z: -700};

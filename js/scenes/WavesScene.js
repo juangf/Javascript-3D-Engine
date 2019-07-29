@@ -8,11 +8,10 @@ import Plane from "../figures/Plane.js";
  * Scene with a castle.
  */
 class WavesScene extends Scene {
-    constructor(camera) {
+    constructor() {
         super({
             id: 'waves',
-            name: 'Waves',
-            camera: camera,
+            name: 'Waves'
         });
 
         this.spaces = 30;

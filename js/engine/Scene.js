@@ -3,7 +3,6 @@ class Scene {
     constructor(config) {
         this.id = config.id;
         this.name = config.name;
-        this.camera = config.camera;
         this.objects = {};
     }
 
@@ -25,9 +24,6 @@ class Scene {
         return this.objects;
     }
 
-    getCamera() {
-        return this.camera;
-    }
     beforeRender() {
         return this;
     }
