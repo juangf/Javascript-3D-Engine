@@ -24,7 +24,7 @@ class CastleScene extends Scene {
             name: 'Castle'
         });
 
-        let size = 200;
+        let size = 1000;
         let high = size * 0.7;
 
         if (options !== null) {
@@ -96,7 +96,7 @@ class CastleScene extends Scene {
                 id: 'wall_tower_1_2',
                 position: new Point(
                     + towerPositions.tower_1.position.x / 2 + towerPositions.tower_2.position.x / 2,
-                    - wallDimension.h / 2 + towerDimension.h / 2 + y,
+                    wallDimension.h / 2 - towerDimension.h / 2 + y,
                     (towerPositions.tower_1.position.z) + (wallDimension.d / 2) - (towerDimension.w / 2)
                 ),
                 geometry: new RegularPrism(
@@ -113,7 +113,7 @@ class CastleScene extends Scene {
                 id: 'wall_tower_1_3',
                 position: new Point(
                     (towerPositions.tower_1.position.x) + (wallDimension.d / 2) - (towerDimension.w / 2),
-                    - wallDimension.h / 2 + towerDimension.h / 2 + y,
+                    wallDimension.h / 2 - towerDimension.h / 2 + y,
                     0,
                 ),
                 geometry: new RegularPrism(
@@ -130,7 +130,7 @@ class CastleScene extends Scene {
                 id: 'wall_tower_3_4',
                 position: new Point(
                     + towerPositions.tower_3.position.x / 2 + towerPositions.tower_4.position.x / 2,
-                    - wallDimension.h / 2 + towerDimension.h / 2 + y,
+                    wallDimension.h / 2 - towerDimension.h / 2 + y,
                     (towerPositions.tower_3.position.z) - (wallDimension.d / 2) + (towerDimension.w / 2)
                 ),
                 geometry: new RegularPrism(
@@ -147,7 +147,7 @@ class CastleScene extends Scene {
                 id: 'wall_tower_2_4',
                 position: new Point(
                     (towerPositions.tower_2.position.x) - (wallDimension.d / 2) + (towerDimension.w / 2),
-                    - wallDimension.h / 2 + towerDimension.h / 2 + y,
+                    wallDimension.h / 2 - towerDimension.h / 2 + y,
                     0
                 ),
                 geometry: new RegularPrism(
@@ -175,7 +175,7 @@ class CastleScene extends Scene {
             }))
             .addObject(new Object3D({
                 id: 'tower_roof_' + id,
-                position: new Point(position.x, position.y - dimension.h, position.z),
+                position: new Point(position.x, position.y + dimension.h, position.z),
                 geometry: new PyramidSquare(dimension.h, dimension.w, dimension.d),
                 options: {
                     drawPoints: false,

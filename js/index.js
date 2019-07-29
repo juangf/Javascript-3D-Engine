@@ -86,6 +86,9 @@ window.onkeydown = (e => {
             renderer.setScene(wavesScene);
             break;
         case KEY_3:
+            renderer.setScene(castleScene);
+            break;
+        case KEY_4:
             renderer.setScene(testLoadScene);
             break;
     }
