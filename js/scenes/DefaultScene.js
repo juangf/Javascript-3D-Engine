@@ -29,7 +29,7 @@ class DefaultScene extends Scene
                 position: new Point(0, 150, 300),
                 geometry: new Cube(300),
                 options: {
-                    drawPoints: false,
+                    drawPoints: true,
                     drawNormals: false
                 }
             }))
@@ -38,7 +38,7 @@ class DefaultScene extends Scene
                 position: new Point(440, 900, 500),
                 geometry: new Sphere(200, 20),
                 options: {
-                    drawNormals: false
+                    drawNormals: true
                 }
             }))
             .addObject(new Object3D({
@@ -52,9 +52,14 @@ class DefaultScene extends Scene
                 geometry: new PyramidSquare(300, 300, 300)
             }))
             .addObject(new Object3D({
-                id: 'cone2',
+                id: 'cone1',
                 position: new Point(400, 0, 600),
                 geometry: new Cone(200, 600, 20)
+            }))
+            .addObject(new Object3D({
+                id: 'cone2',
+                position: new Point(-400, 0, -100),
+                geometry: new Cone(100, 200, 30)
             }));
     }
     beforeRender() {
