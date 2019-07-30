@@ -19,6 +19,7 @@ class Renderer {
 
     setScene(scene) {
         this.scene = scene;
+        return this;
     }
 
     isVisible(p1, p2, p3) {
@@ -34,6 +35,7 @@ class Renderer {
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        return this;
     }
 
     drawPoint(point, text = '') {
@@ -70,6 +72,7 @@ class Renderer {
         );
         this.ctx.stroke();
         this.ctx.strokeStyle = '#000000';
+        return this;
     }
 
     drawPolygons(renderedPolygons) {
@@ -112,6 +115,7 @@ class Renderer {
                 this.drawNormal(points[0], points[1], points[2]);
             }
         });
+        return this;
     }
 
     renderPolygon(camera, polygon, position, points, transforms, transformsMatrix, options) {
@@ -191,7 +195,8 @@ class Renderer {
             renderedPolygons = renderedPolygons.concat(this.renderObjectPolygons(objects[key], this.camera));
         });
 
-        this.drawPolygons(renderedPolygons);   
+        this.drawPolygons(renderedPolygons);
+        return this;
     }
 }
 
