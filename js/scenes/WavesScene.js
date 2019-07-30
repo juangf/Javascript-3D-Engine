@@ -2,7 +2,7 @@ import Scene from "../engine/Scene.js";
 import Object3D from "../engine/Object3D.js";
 import Point from "../engine/Point.js";
 import Utils from "../engine/Utils.js";
-import Plane from "../figures/Plane.js";
+import Plane from "../geometries/Plane.js";
 
 /**
  * Scene with a castle.

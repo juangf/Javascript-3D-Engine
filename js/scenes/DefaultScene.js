@@ -1,11 +1,11 @@
 import Scene from "../engine/Scene.js";
 import Object3D from "../engine/Object3D.js";
 import Point from "../engine/Point.js";
-import Cube from "../figures/Cube.js";
-import Plane from "../figures/Plane.js";
-import Sphere from "../figures/Sphere.js";
-import PyramidSquare from "../figures/PyramidSquare.js";
-import Cone from "../figures/Cone.js";
+import Cube from "../geometries/Cube.js";
+import Plane from "../geometries/Plane.js";
+import Sphere from "../geometries/Sphere.js";
+import PyramidSquare from "../geometries/PyramidSquare.js";
+import Cone from "../geometries/Cone.js";
 
 class DefaultScene extends Scene
 {

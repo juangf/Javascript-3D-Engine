@@ -1,8 +1,8 @@
 import Scene from "../engine/Scene.js";
 import Object3D from "../engine/Object3D.js";
 import Point from "../engine/Point.js";
-import PyramidSquare from "../figures/PyramidSquare.js";
-import RegularPrism from "../figures/RegularPrism.js";
+import PyramidSquare from "../geometries/PyramidSquare.js";
+import RegularPrism from "../geometries/RegularPrism.js";
 
 /**
  * Scene with a castle.
