@@ -137,7 +137,7 @@ class Renderer {
             let p = Point.add(points[indexs[i]], position);
             p = Point.multiplyMatrix(p, transformsMatrix);
 
-            if (p.getZ() > camera.getFar() || p.getZ() < camera.getNear()) {
+            if (!camera.isPointInViewport(p)) {
                 return null;
             }
 
