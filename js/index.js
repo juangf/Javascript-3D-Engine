@@ -37,15 +37,16 @@ let camera = new FpCamera({
 
 let renderer = new Renderer(canvas, camera, homeScene);
 
-let renderFn = timestamp => {
+/*let renderFn = timestamp => {
     requestAnimationFrame(renderFn);
     renderer.render();
-};
-renderFn();
+};*/
+renderer.render();
 
 window.onkeydown = (e => {
     let updateScene = cameraPosition => {
         camera.setPosition(cameraPosition);
+        renderer.render();
     };
 
     switch (e.keyCode) {
@@ -80,16 +81,16 @@ window.onkeydown = (e => {
             updateScene(cameraPosition);
             break;
         case KEY_1:
-            renderer.setScene(homeScene);
+            renderer.setScene(homeScene).render();
             break;
         case KEY_2:
-            renderer.setScene(wavesScene);
+            renderer.setScene(wavesScene).render();
             break;
         case KEY_3:
-            renderer.setScene(castleScene);
+            renderer.setScene(castleScene).render();
             break;
         case KEY_4:
-            renderer.setScene(testLoadScene);
+            renderer.setScene(testLoadScene).render();
             break;
     }
 });
@@ -104,4 +105,5 @@ document.onmousemove =(e => {
     let beta = Utils.degToRad((percY - 0.5) * 360);
     camera.setYaw(alpha);
     camera.setPitch(beta);
+    renderer.render();
 });
