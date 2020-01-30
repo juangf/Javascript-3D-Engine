@@ -6,7 +6,7 @@ https://juangf.github.io/Javascript-3D-Engine/
 
 <img src="https://juangf.github.io/Javascript-3D-Engine/screenshot2.png" alt="Image of the engine working" width="650px">
 
-## Camera LookAt with the cursor
+## Camera 
 
 ## Camera controls
 - Key `W`: Front.
@@ -18,3 +18,4 @@ https://juangf.github.io/Javascript-3D-Engine/
 - Key `C`: Restart camera position.
 - Key `1`: Default scene.
 - Key `2`: Pyramid scene.
+- Mouse Pointer: LookAt.
