@@ -21,6 +21,12 @@ class DefaultScene extends Scene
                 position: new Point(-1000, -50, -500),
                 geometry: new Plane(2000, 20),
                 options: {
+                    rgbaColor: {
+                        r: 124,
+                        g: 204,
+                        b: 39,
+                        a: 1
+                    },
                     backfaceCulling: false
                 }
             }))
@@ -29,6 +35,12 @@ class DefaultScene extends Scene
                 position: new Point(0, 150, 300),
                 geometry: new Cube(300),
                 options: {
+                    rgbaColor: {
+                        r: 255,
+                        g: 131,
+                        b: 131,
+                        a: 1
+                    },
                     drawPoints: true,
                     drawNormals: false
                 }

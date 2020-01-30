@@ -4,7 +4,8 @@ class RenderedPolygon {
         this.pointsIndexs = [];
         this.options = Object.assign({
             drawPoints: false,
-            drawNormals: false
+            drawNormals: false,
+            rgbaColor: ''
         }, options);
     }
 

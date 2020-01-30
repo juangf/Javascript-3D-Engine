@@ -101,7 +101,7 @@ class Renderer {
             });
             this.ctx.closePath();
             this.ctx.stroke();
-            this.ctx.fillStyle = '#bbb';
+            this.ctx.fillStyle = options.rgbaColor;
             this.ctx.fill();
             
             if (options.drawPoints) {
@@ -174,6 +174,11 @@ class Renderer {
                     renderedPoly.setOptions({
                         drawNormals: options.drawNormals,
                         drawPoints: options.drawPoints
+                    });
+                }
+                if (options.rgbaColor) {
+                    renderedPoly.setOptions({
+                        rgbaColor: `rgba(${options.rgbaColor.r}, ${options.rgbaColor.g}, ${options.rgbaColor.b}, ${options.rgbaColor.a})`
                     });
                 }
                 renderedPolygons.push(renderedPoly);

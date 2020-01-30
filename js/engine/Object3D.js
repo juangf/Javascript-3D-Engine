@@ -9,7 +9,13 @@ class Object3D {
         this.position = config.position;
         this.options = Object.assign({
             drawPoints: false,
-            backfaceCulling: true
+            backfaceCulling: true,
+            rgbaColor: {
+                r: 180,
+                g: 180,
+                b: 180,
+                a : 1
+            }
         }, config.options);
         this.transforms = {
             translation: new Matrix(),
