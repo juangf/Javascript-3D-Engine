@@ -4,7 +4,7 @@ Javascript 3D Engine - Based in canvas element
 Try it here:
 https://juangf.github.io/Javascript-3D-Engine/
 
-<img src="https://juangf.github.io/Javascript-3D-Engine/screenshot2.png" alt="Image of the engine working" width="650px">
+<img src="https://juangf.github.io/Javascript-3D-Engine/screenshot2.png" alt="Image of the engine working" width="700px">
 
 ## Camera 
 
