@@ -15,13 +15,17 @@ class Generate {
      * @param {number} size
      * @returns {Object3D}
      */
-    constructor(x, y, z, file, size = 100) {
+    constructor(x, y, z, file, size = 100, options = {}) {
         this.point = {x: x, y: y, z: z};
         this.size = size;
         this.file = file;
 
         let loader = new Loader();
         this.raw = loader.load(this.file);
+        this.options = Object.assign({
+            drawPoints: false,
+            drawNormals: false
+        }, options);
 
         return this.parse();
     }
@@ -66,10 +70,7 @@ class Generate {
             id: this.obj.name,
             position: new Point(this.point.x, this.point.y, this.point.z),
             geometry: this.object,
-            options: {
-                drawPoints: false,
-                drawNormals: false
-            }
+            options: this.options
         });
     }
 
