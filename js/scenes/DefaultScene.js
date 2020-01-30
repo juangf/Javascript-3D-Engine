@@ -42,7 +42,8 @@ class DefaultScene extends Scene
                         b: 131,
                         a: 0.5
                     },
-                    drawPoints: true
+                    drawPoints: true,
+                    backfaceCulling: false
                 }
             }))
             .addObject(new Object3D({
