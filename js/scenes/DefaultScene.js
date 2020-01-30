@@ -6,6 +6,7 @@ import Plane from "../geometries/Plane.js";
 import Sphere from "../geometries/Sphere.js";
 import PyramidSquare from "../geometries/PyramidSquare.js";
 import Cone from "../geometries/Cone.js";
+import Generate from '../engine/reader/Generate.js';
 
 class DefaultScene extends Scene
 {
@@ -39,10 +40,9 @@ class DefaultScene extends Scene
                         r: 255,
                         g: 131,
                         b: 131,
-                        a: 1
+                        a: 0.5
                     },
-                    drawPoints: true,
-                    drawNormals: false
+                    drawPoints: true
                 }
             }))
             .addObject(new Object3D({
@@ -55,24 +55,48 @@ class DefaultScene extends Scene
             }))
             .addObject(new Object3D({
                 id: 'sphere2',
-                position: new Point(-380, 340, 0),
-                geometry: new Sphere(100, 30)
+                position: new Point(-380, 400, 100),
+                geometry: new Sphere(100, 30),
+                options: {
+                    rgbaColor: {
+                        r: 255,
+                        g: 0,
+                        b: 0,
+                        a: 1
+                    }
+                }
             }))
             .addObject(new Object3D({
                 id: 'pyramid_square',
                 position: new Point(450, 150, 190),
-                geometry: new PyramidSquare(300, 300, 300)
+                geometry: new PyramidSquare(300, 300, 300),
+                options: {
+                    rgbaColor: {
+                        r: 100,
+                        g: 100,
+                        b: 200,
+                        a: 1
+                    }
+                }
             }))
             .addObject(new Object3D({
                 id: 'cone1',
-                position: new Point(400, 0, 600),
+                position: new Point(400, 0, 700),
                 geometry: new Cone(200, 600, 20)
             }))
             .addObject(new Object3D({
                 id: 'cone2',
-                position: new Point(-400, 0, -100),
+                position: new Point(400, 0, -100),
                 geometry: new Cone(100, 200, 30)
-            }));
+            }))
+            .addObject(new Generate(-450, 0, -100, 'resources/obj/teapot.obj', 100, {
+                rgbaColor: {
+                    r: 255,
+                    g: 193,
+                    b: 7,
+                    a: 1
+                }
+            }))
     }
     beforeRender() {
         return this;
