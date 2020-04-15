@@ -92,7 +92,7 @@ class Point {
         if (theta < -1) { theta = -1; }
         if (theta > 1) { theta = 1; }
         return Math.acos(theta);
-      }
+    }
 }
 
 export default Point;

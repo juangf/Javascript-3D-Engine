@@ -4,6 +4,7 @@ class Scene {
         this.id = config.id;
         this.name = config.name;
         this.objects = {};
+        this.lights = {};
     }
 
     addObject(obj) {
@@ -22,6 +23,24 @@ class Scene {
 
     getObjects() {
         return this.objects;
+    }
+
+    addLight(light) {
+        this.lights[light.id] = light;
+        return this;
+    }
+
+    removeLight(lightId) {
+        delete this.lights[lightId];
+        return this;
+    }
+
+    getLight(lightId) {
+        return this.lights[lightId];
+    }
+
+    getLights() {
+        return this.lights;
     }
 
     beforeRender() {

@@ -15,6 +15,10 @@ class Renderer {
             [0,  0, 1, 0],
             [0,  0, 0, 1]
         ]);
+
+        this.objectsLoaded = false;
+        this.objects = {};
+        this.lights = {};
     }
 
     setScene(scene) {
@@ -155,7 +159,7 @@ class Renderer {
         return renderedPoly;
     }
 
-    renderObjectPolygons(object, camera) {
+    renderObjectPolygons(object, camera, lights) {
         let pos = object.getPosition();
         let options = object.getOptions();
         let geometry = object.getGeometry();
@@ -188,17 +192,32 @@ class Renderer {
         return renderedPolygons;
     }
 
+    renderLight(light, camera) {
+
+    }
+
     render() {
         this.clearCanvas();
+        
         // Call before render scene method
         this.scene.beforeRender();
 
-        let objects = this.scene.getObjects();
+        if (!this.objectsLoaded) {
+            this.objects = this.scene.getObjects();
+            this.lights = this.scene.getLights();
+
+            let lightObjects = [];
+            for (let [id, light] of Object.entries(this.lights)) {
+                lightObjects = lightObjects.concat(light.getObjects());
+            }
+            this.objects = {...this.objects, ...lightObjects};
+            this.objectsLoaded = true;
+        }
 
         let renderedPolygons = [];
-        Object.keys(objects).forEach(key => {
-            renderedPolygons = renderedPolygons.concat(this.renderObjectPolygons(objects[key], this.camera));
-        });
+        for (let [id, object] of Object.entries(this.objects)) {
+            renderedPolygons = renderedPolygons.concat(this.renderObjectPolygons(object, this.camera, this.lights));
+        }
 
         this.drawPolygons(renderedPolygons);
         return this;

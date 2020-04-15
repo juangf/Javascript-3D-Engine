@@ -1,5 +1,6 @@
 import Scene from "../engine/Scene.js";
 import Object3D from "../engine/Object3D.js";
+import SpotLight from "../engine/Light/SpotLight.js";
 import Point from "../engine/Point.js";
 import Cube from "../geometries/Cube.js";
 import Plane from "../geometries/Plane.js";
@@ -90,13 +91,9 @@ class DefaultScene extends Scene
                 position: new Point(400, 0, -100),
                 geometry: new Cone(100, 200, 30)
             }))
-            .addObject(new Generate(-450, 0, -100, 'resources/obj/teapot.obj', 100, {
-                rgbaColor: {
-                    r: 255,
-                    g: 193,
-                    b: 7,
-                    a: 1
-                }
+            .addLight(new SpotLight({
+                id: 'light1',
+                position: new Point(0, 700, 0)
             }))
     }
     beforeRender() {
