@@ -43,8 +43,8 @@ class DefaultScene extends Scene
                         b: 131,
                         a: 0.5
                     },
-                    drawPoints: true,
-                    backfaceCulling: false
+                    drawPoints: false,
+                    backfaceCulling: true
                 }
             }))
             .addObject(new Object3D({
@@ -52,7 +52,7 @@ class DefaultScene extends Scene
                 position: new Point(440, 900, 500),
                 geometry: new Sphere(200, 20),
                 options: {
-                    drawNormals: true
+                    
                 }
             }))
             .addObject(new Object3D({
@@ -93,7 +93,7 @@ class DefaultScene extends Scene
             }))
             .addLight(new SpotLight({
                 id: 'light1',
-                position: new Point(0, 700, 0)
+                position: new Point(0, 100, 100)
             }))
     }
     beforeRender() {

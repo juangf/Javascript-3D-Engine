@@ -48,6 +48,11 @@ class Object3D {
         return this.position;
     }
 
+    setPosition(p) {
+        this.position = p;
+        return this;
+    }
+
     getGeometry() {
         return this.geometry;
     }

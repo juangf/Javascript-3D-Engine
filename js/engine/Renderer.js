@@ -104,6 +104,7 @@ class Renderer {
                 );
             });
             this.ctx.closePath();
+            // this.ctx.strokeStyle = options.rgbaColor;
             this.ctx.stroke();
             this.ctx.fillStyle = options.rgbaColor;
             this.ctx.fill();
@@ -159,6 +160,16 @@ class Renderer {
         return renderedPoly;
     }
 
+    lightFn(p0, p1, p2, objPos, pL){
+        let ab1 = Point.substract(p1, p2);
+        let ab2 = Point.substract(p1, p0);
+        let ab1xab2 = Point.normalize(Point.dotProduct(ab1, ab2));
+        let vOL = Point.substract(objPos, pL);
+        let alpha = Point.angleBetween(ab1xab2, vOL) * 180 / Math.PI;
+
+        return alpha;
+    }
+
     renderObjectPolygons(object, camera, lights) {
         let pos = object.getPosition();
         let options = object.getOptions();
@@ -180,11 +191,33 @@ class Renderer {
                         drawPoints: options.drawPoints
                     });
                 }
-                if (options.rgbaColor) {
-                    renderedPoly.setOptions({
-                        rgbaColor: `rgba(${options.rgbaColor.r}, ${options.rgbaColor.g}, ${options.rgbaColor.b}, ${options.rgbaColor.a})`
-                    });
+
+                for (let [id, light] of Object.entries(lights)) {
+                    let indexs = p.getIndexs();
+                    let temp = this.lightFn(
+                        points[indexs[0]],
+                        points[indexs[1]],
+                        points[indexs[2]],
+                        pos,
+                        light.getPosition()
+                    );
+
+                    let ambient = 40;
+
+                    temp += ambient;
+
+                    if (options.rgbaColor) {
+                        let perc = temp / 255;
+                        renderedPoly.setOptions({
+                            rgbaColor: `rgba(${options.rgbaColor.r * perc}, ${options.rgbaColor.g * perc}, ${options.rgbaColor.b * perc}, ${options.rgbaColor.a})`
+                        });
+                    } else {
+                        renderedPoly.setOptions({
+                            rgbaColor: "rgba("+temp+","+temp+","+temp+",1)"
+                        });
+                    }
                 }
+
                 renderedPolygons.push(renderedPoly);
             }
         });

@@ -23,6 +23,18 @@ class SpotLight {
     getObjects() {
         return [this.object];
     }
+
+    getPosition() {
+        return this.position;
+    }
+
+    setPosition(p) {
+        this.position = p;
+        if (this.object) {
+            this.object.setPosition(p);
+        }
+        return this;
+    }
 }
 
 export default SpotLight;
