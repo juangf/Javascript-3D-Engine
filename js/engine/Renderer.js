@@ -15,6 +15,10 @@ class Renderer {
             [0,  0, 1, 0],
             [0,  0, 0, 1]
         ]);
+
+        this.objectsLoaded = false;
+        this.objects = {};
+        this.lights = {};
     }
 
     setScene(scene) {
@@ -53,11 +57,15 @@ class Renderer {
         return this;
     }
 
-    drawNormal(p0, p1, p2) {
+    getNormal(p0, p1, p2) {
         let ab1 = Point.substract(p1, p2);
         let ab2 = Point.substract(p1, p0);
         let ab1xab2 = Point.dotProduct(ab1, ab2);
-        let pDir = Point.multiply(Point.normalize(ab1xab2), 50);
+        return Point.normalize(ab1xab2);
+    }
+
+    drawNormal(p0, p1, p2) {
+        let pDir = Point.multiply(this.getNormal(p0, p1, p2), 50);
         let p = p1;
 
         this.ctx.beginPath();
@@ -100,6 +108,7 @@ class Renderer {
                 );
             });
             this.ctx.closePath();
+            this.ctx.strokeStyle = options.rgbaColor;
             this.ctx.stroke();
             this.ctx.fillStyle = options.rgbaColor;
             this.ctx.fill();
@@ -155,7 +164,15 @@ class Renderer {
         return renderedPoly;
     }
 
-    renderObjectPolygons(object, camera) {
+    lightFn(p0, p1, p2, objPos, pL){
+        let vN = this.getNormal(p0, p1, p2);
+        let vOL = Point.substract(Point.add(p0, objPos), pL);
+        let alpha = Point.angleBetween(vOL, vN) * 180 / Math.PI;
+
+        return alpha * 255 / 90;
+    }
+
+    renderObjectPolygons(object, camera, lights) {
         let pos = object.getPosition();
         let options = object.getOptions();
         let geometry = object.getGeometry();
@@ -166,6 +183,7 @@ class Renderer {
         // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
         let transformsMatrix = Matrix.multiply(this.worldMatrix, camera.getMatrix());
         let renderedPolygons = [];
+        let ambient = 190;
 
         polygons.forEach(p => {
             let renderedPoly = this.renderPolygon(camera, p, pos, points, transforms, transformsMatrix, options);
@@ -176,11 +194,28 @@ class Renderer {
                         drawPoints: options.drawPoints
                     });
                 }
-                if (options.rgbaColor) {
+                if (object.getId() !== 'spotLight_Sphere_light1') {
+                for (let [id, light] of Object.entries(lights)) {
+                    let indexs = p.getIndexs();
+                    let temp = this.lightFn(
+                        points[indexs[0]],
+                        points[indexs[1]],
+                        points[indexs[2]],
+                        pos,
+                        light.getPosition()
+                    );
+
+                    if (temp < ambient) {
+                        temp = ambient;
+                    }
+
+                    let color = this.mixRgbaColors(options.rgbaColor, light.getOptions()['rgbaColor'], temp / 255);
+                    
                     renderedPoly.setOptions({
-                        rgbaColor: `rgba(${options.rgbaColor.r}, ${options.rgbaColor.g}, ${options.rgbaColor.b}, ${options.rgbaColor.a})`
+                        rgbaColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
                     });
-                }
+                }}
+
                 renderedPolygons.push(renderedPoly);
             }
         });
@@ -188,17 +223,40 @@ class Renderer {
         return renderedPolygons;
     }
 
+    // Fast and easy way to combine (additive mode) two RGBA colors with JavaScript.
+    // https://gist.github.com/JordanDelcros/518396da1c13f75ee057
+    mixRgbaColors(base, added, ratio = 1) {
+        const alpha = 1 - (1 - added.a) * (1 - base.a);
+        return {
+            'r' : Math.round((added.r * added.a / alpha) + (base.r * base.a * (1 - added.a) / alpha)) * ratio,
+            'g' : Math.round((added.g * added.a / alpha) + (base.g * base.a * (1 - added.a) / alpha)) * ratio,
+            'b' : Math.round((added.b * added.a / alpha) + (base.b * base.a * (1 - added.a) / alpha)) * ratio,
+            'a' : alpha
+        };
+    }
+
     render() {
         this.clearCanvas();
+        
         // Call before render scene method
         this.scene.beforeRender();
 
-        let objects = this.scene.getObjects();
+        if (!this.objectsLoaded) {
+            this.objects = this.scene.getObjects();
+            this.lights = this.scene.getLights();
+
+            let lightObjects = [];
+            for (let [id, light] of Object.entries(this.lights)) {
+                lightObjects = lightObjects.concat(light.getObjects());
+            }
+            this.objects = {...this.objects, ...lightObjects};
+            this.objectsLoaded = true;
+        }
 
         let renderedPolygons = [];
-        Object.keys(objects).forEach(key => {
-            renderedPolygons = renderedPolygons.concat(this.renderObjectPolygons(objects[key], this.camera));
-        });
+        for (let [id, object] of Object.entries(this.objects)) {
+            renderedPolygons = renderedPolygons.concat(this.renderObjectPolygons(object, this.camera, this.lights));
+        }
 
         this.drawPolygons(renderedPolygons);
         return this;

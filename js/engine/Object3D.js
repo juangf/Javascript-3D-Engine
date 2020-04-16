@@ -14,7 +14,7 @@ class Object3D {
                 r: 180,
                 g: 180,
                 b: 180,
-                a : 1
+                a: 1
             }
         }, config.options);
         this.transforms = {
@@ -46,6 +46,11 @@ class Object3D {
 
     getPosition() {
         return this.position;
+    }
+
+    setPosition(p) {
+        this.position = p;
+        return this;
     }
 
     getGeometry() {
