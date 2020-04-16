@@ -57,11 +57,15 @@ class Renderer {
         return this;
     }
 
-    drawNormal(p0, p1, p2) {
+    getNormal(p0, p1, p2) {
         let ab1 = Point.substract(p1, p2);
         let ab2 = Point.substract(p1, p0);
         let ab1xab2 = Point.dotProduct(ab1, ab2);
-        let pDir = Point.multiply(Point.normalize(ab1xab2), 50);
+        return Point.normalize(ab1xab2);
+    }
+
+    drawNormal(p0, p1, p2) {
+        let pDir = Point.multiply(this.getNormal(p0, p1, p2), 50);
         let p = p1;
 
         this.ctx.beginPath();
@@ -161,13 +165,11 @@ class Renderer {
     }
 
     lightFn(p0, p1, p2, objPos, pL){
-        let ab1 = Point.substract(p1, p2);
-        let ab2 = Point.substract(p1, p0);
-        let ab1xab2 = Point.normalize(Point.dotProduct(ab1, ab2));
-        let vOL = Point.substract(objPos, pL);
-        let alpha = Point.angleBetween(ab1xab2, vOL) * 180 / Math.PI;
+        let vN = this.getNormal(p0, p1, p2);
+        let vOL = Point.substract(Point.add(p0, objPos), pL);
+        let alpha = Point.angleBetween(vOL, vN) * 180 / Math.PI;
 
-        return alpha;
+        return alpha * 255 / 90;
     }
 
     renderObjectPolygons(object, camera, lights) {
@@ -182,6 +184,8 @@ class Renderer {
         let transformsMatrix = Matrix.multiply(this.worldMatrix, camera.getMatrix());
         let renderedPolygons = [];
 
+        let ambient = 190;
+
         polygons.forEach(p => {
             let renderedPoly = this.renderPolygon(camera, p, pos, points, transforms, transformsMatrix, options);
             if (renderedPoly) {
@@ -191,7 +195,7 @@ class Renderer {
                         drawPoints: options.drawPoints
                     });
                 }
-
+                if (object.getId() !== 'spotLight_Sphere_light1') {
                 for (let [id, light] of Object.entries(lights)) {
                     let indexs = p.getIndexs();
                     let temp = this.lightFn(
@@ -202,9 +206,9 @@ class Renderer {
                         light.getPosition()
                     );
 
-                    let ambient = 40;
-
-                    temp += ambient;
+                    if (temp < ambient) {
+                        temp = ambient;
+                    }
 
                     if (options.rgbaColor) {
                         let perc = temp / 255;
@@ -213,10 +217,10 @@ class Renderer {
                         });
                     } else {
                         renderedPoly.setOptions({
-                            rgbaColor: "rgba("+temp+","+temp+","+temp+",1)"
+                            rgbaColor: `rgba(${temp},${temp},${temp},1)`
                         });
                     }
-                }
+                }}
 
                 renderedPolygons.push(renderedPoly);
             }
