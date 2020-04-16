@@ -24,9 +24,9 @@ class DefaultScene extends Scene
                 geometry: new Plane(2000, 20),
                 options: {
                     rgbaColor: {
-                        r: 124,
-                        g: 204,
-                        b: 39,
+                        r: 100,
+                        g: 104,
+                        b: 139,
                         a: 1
                     },
                     backfaceCulling: false
@@ -41,10 +41,9 @@ class DefaultScene extends Scene
                         r: 255,
                         g: 131,
                         b: 131,
-                        a: 0.5
+                        a: 1
                     },
-                    drawPoints: false,
-                    backfaceCulling: true
+                    drawPoints: false
                 }
             }))
             .addObject(new Object3D({
@@ -52,13 +51,19 @@ class DefaultScene extends Scene
                 position: new Point(440, 900, 500),
                 geometry: new Sphere(200, 20),
                 options: {
-                    
+                    rgbaColor: {
+                        r: 100,
+                        g: 10,
+                        b: 131,
+                        a: 1
+                    },
+                    drawNormals: false
                 }
             }))
             .addObject(new Object3D({
                 id: 'sphere2',
                 position: new Point(-380, 400, 100),
-                geometry: new Sphere(100, 30),
+                geometry: new Sphere(100, 20),
                 options: {
                     rgbaColor: {
                         r: 255,
@@ -91,9 +96,17 @@ class DefaultScene extends Scene
                 position: new Point(400, 0, -100),
                 geometry: new Cone(100, 200, 30)
             }))
+            .addObject(new Generate(-450, 0, -100, 'resources/obj/teapot.obj', 100, {
+                rgbaColor: {
+                    r: 255,
+                    g: 193,
+                    b: 7,
+                    a: 1
+                }
+            }))
             .addLight(new SpotLight({
                 id: 'light1',
-                position: new Point(-800, 1000, -300)
+                position: new Point(-800, 1000, 300)
             }))
     }
     beforeRender() {
