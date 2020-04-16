@@ -183,7 +183,6 @@ class Renderer {
         // Note: TransformedPoint = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalPoint
         let transformsMatrix = Matrix.multiply(this.worldMatrix, camera.getMatrix());
         let renderedPolygons = [];
-
         let ambient = 190;
 
         polygons.forEach(p => {
@@ -210,16 +209,11 @@ class Renderer {
                         temp = ambient;
                     }
 
-                    if (options.rgbaColor) {
-                        let perc = temp / 255;
-                        renderedPoly.setOptions({
-                            rgbaColor: `rgba(${options.rgbaColor.r * perc}, ${options.rgbaColor.g * perc}, ${options.rgbaColor.b * perc}, ${options.rgbaColor.a})`
-                        });
-                    } else {
-                        renderedPoly.setOptions({
-                            rgbaColor: `rgba(${temp},${temp},${temp},1)`
-                        });
-                    }
+                    let color = this.mixRgbaColors(options.rgbaColor, light.getOptions()['rgbaColor'], temp / 255);
+                    
+                    renderedPoly.setOptions({
+                        rgbaColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+                    });
                 }}
 
                 renderedPolygons.push(renderedPoly);
@@ -229,8 +223,16 @@ class Renderer {
         return renderedPolygons;
     }
 
-    renderLight(light, camera) {
-
+    // Fast and easy way to combine (additive mode) two RGBA colors with JavaScript.
+    // https://gist.github.com/JordanDelcros/518396da1c13f75ee057
+    mixRgbaColors(base, added, ratio = 1) {
+        const alpha = 1 - (1 - added.a) * (1 - base.a);
+        return {
+            'r' : Math.round((added.r * added.a / alpha) + (base.r * base.a * (1 - added.a) / alpha)) * ratio,
+            'g' : Math.round((added.g * added.a / alpha) + (base.g * base.a * (1 - added.a) / alpha)) * ratio,
+            'b' : Math.round((added.b * added.a / alpha) + (base.b * base.a * (1 - added.a) / alpha)) * ratio,
+            'a' : alpha
+        };
     }
 
     render() {

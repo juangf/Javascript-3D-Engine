@@ -94,7 +94,7 @@ class DefaultScene extends Scene
             .addObject(new Object3D({
                 id: 'cone2',
                 position: new Point(400, 0, -100),
-                geometry: new Cone(100, 200, 30)
+                geometry: new Cone(100, 200, 20)
             }))
             .addObject(new Generate(-450, 0, -100, 'resources/obj/teapot.obj', 100, {
                 rgbaColor: {
