@@ -107,3 +107,18 @@ document.onmousemove =(e => {
     camera.setPitch(beta);
     renderer.render();
 });
+
+let alpha = 0;
+let radius = 600;
+let light = homeScene.getLight('light1');
+
+let renderFn = timestamp => {
+    requestAnimationFrame(renderFn);
+    alpha += 15;
+    if (alpha > 360) {
+        alpha -= 360;
+    }
+    light.setPosition(new Point(Math.cos(alpha * Math.PI / 180) * radius, 500, Math.sin(alpha * Math.PI / 180) * radius));
+    renderer.render();
+}
+renderFn();

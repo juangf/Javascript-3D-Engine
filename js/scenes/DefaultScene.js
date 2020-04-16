@@ -106,7 +106,7 @@ class DefaultScene extends Scene
             }))
             .addLight(new SpotLight({
                 id: 'light1',
-                position: new Point(-800, 1000, 300)
+                position: new Point(0, 500, 0)
             }))
     }
     beforeRender() {
