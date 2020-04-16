@@ -108,7 +108,7 @@ class Renderer {
                 );
             });
             this.ctx.closePath();
-            // this.ctx.strokeStyle = options.rgbaColor;
+            this.ctx.strokeStyle = options.rgbaColor;
             this.ctx.stroke();
             this.ctx.fillStyle = options.rgbaColor;
             this.ctx.fill();
