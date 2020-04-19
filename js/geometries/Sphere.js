@@ -3,8 +3,7 @@ import Polygon from '../engine/Polygon.js';
 import Geometry from '../engine/Geometry.js';
 
 class Sphere extends Geometry {
-
-    constructor(radius, space) {
+    constructor(radius, space, allTriangles = true) {
         super();
         let index = 0;
         let startInd = 0;
@@ -34,19 +33,45 @@ class Sphere extends Geometry {
 
                 if (i > 0) {
                     if (j < 360 / space - 1) {
-                        this.addPolygon(new Polygon([
-                            index,
-                            index + 360 / space,
-                            index + 360 / space + 1,
-                            index + 1
-                        ]));
+                        if (allTriangles) {
+                            this.addPolygon(new Polygon([
+                                index,
+                                index + 360 / space,
+                                index + 1
+                            ]));
+                            this.addPolygon(new Polygon([
+                                index + 360 / space,
+                                index + 360 / space + 1,
+                                index + 1
+                            ]));
+                        } else {
+                            this.addPolygon(new Polygon([
+                                index,
+                                index + 360 / space,
+                                index + 360 / space + 1,
+                                index + 1
+                            ]));
+                        }
                     } else {
-                        this.addPolygon(new Polygon([
-                            index,
-                            index + 360 / space,
-                            startInd + 360 / space,
-                            startInd
-                        ]));
+                        if (allTriangles) {
+                            this.addPolygon(new Polygon([
+                                index,
+                                index + 360 / space,
+                                startInd
+                            ]));
+                            this.addPolygon(new Polygon([
+                                index + 360 / space,
+                                startInd + 360 / space,
+                                startInd
+                            ]));
+                        } else {
+                            this.addPolygon(new Polygon([
+                                index,
+                                index + 360 / space,
+                                startInd + 360 / space,
+                                startInd
+                            ]));
+                        }
                     }
                     index++;
                 }
