@@ -47,6 +47,7 @@ class Renderer {
         let y = this.projection('y', point.getY(), point.getZ());
 
         this.ctx.beginPath();
+        this.ctx.strokeStyle = '#000000';
         this.ctx.arc(x, y, 4, 0, Math.PI * 2, true);
         this.ctx.stroke();
 
@@ -66,7 +67,7 @@ class Renderer {
 
     drawNormal(p0, p1, p2) {
         let pDir = Point.multiply(this.getNormal(p0, p1, p2), 50);
-        let p = p1;
+        let p = Point.multiply(Point.add(Point.add(p0, p1), p2), 0.33333);
 
         this.ctx.beginPath();
         this.ctx.moveTo(
@@ -110,8 +111,10 @@ class Renderer {
             this.ctx.closePath();
             this.ctx.strokeStyle = options.rgbaColor;
             this.ctx.stroke();
-            this.ctx.fillStyle = options.rgbaColor;
-            this.ctx.fill();
+            if (!options.wireFrame) {
+                this.ctx.fillStyle = options.rgbaColor;
+                this.ctx.fill();
+            }
             
             if (options.drawPoints) {
                 let pointIndexs = poly.getPointIndexs();
@@ -194,7 +197,11 @@ class Renderer {
                         drawPoints: options.drawPoints
                     });
                 }
-                if (object.getId() !== 'spotLight_Sphere_light1') {
+                
+                if (options.wireFrame) {
+                    renderedPoly.setOptions({wireFrame: options.wireFrame});
+                }
+
                 for (let [id, light] of Object.entries(lights)) {
                     let indexs = p.getIndexs();
                     let temp = this.lightFn(
@@ -214,7 +221,7 @@ class Renderer {
                     renderedPoly.setOptions({
                         rgbaColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
                     });
-                }}
+                }
 
                 renderedPolygons.push(renderedPoly);
             }

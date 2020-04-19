@@ -10,6 +10,8 @@ class Object3D {
         this.options = Object.assign({
             drawPoints: false,
             backfaceCulling: true,
+            drawNormals: false,
+            wireFrame: false,
             rgbaColor: {
                 r: 180,
                 g: 180,
