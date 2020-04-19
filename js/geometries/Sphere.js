@@ -9,7 +9,7 @@ class Sphere extends Geometry {
         let index = 0;
         let startInd = 0;
 
-        this.addPoint(new Point(0, 0, radius));
+        this.addPoint(new Point(0, radius, 0));
 
         for (let j = 0; j < 360 / space - 1; j++) {
             this.addPolygon(new Polygon([0, index + 1, index + 2]));
@@ -28,8 +28,8 @@ class Sphere extends Geometry {
                 }
                 this.addPoint(new Point(
                     radius * Math.sin(a / 180 * Math.PI) * Math.sin(b / 180 * Math.PI),
-                    radius * Math.cos(a / 180 * Math.PI) * Math.sin(b / 180 * Math.PI),
-                    radius * Math.cos(b / 180 * Math.PI)
+                    radius * Math.cos(b / 180 * Math.PI),
+                    -radius * Math.cos(a / 180 * Math.PI) * Math.sin(b / 180 * Math.PI)
                 ));
 
                 if (i > 0) {
@@ -53,7 +53,7 @@ class Sphere extends Geometry {
             }
         }
 
-        this.addPoint(new Point(0, 0, -radius));
+        this.addPoint(new Point(0, -radius, 0));
 
         index = this.getPoints().length - 1;
         startInd = index;
