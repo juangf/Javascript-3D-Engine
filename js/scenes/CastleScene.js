@@ -3,6 +3,7 @@ import Object3D from "../engine/Object3D.js";
 import Point from "../engine/Point.js";
 import PyramidSquare from "../geometries/PyramidSquare.js";
 import RegularPrism from "../geometries/RegularPrism.js";
+import SpotLight from "../engine/Light/SpotLight.js";
 
 /**
  * Scene with a castle.
@@ -106,7 +107,13 @@ class CastleScene extends Scene {
                 ),
                 options: {
                     drawPoints: false,
-                    drawNormals: false
+                    drawNormals: false,
+                    rgbaColor: {
+                        r: 255,
+                        g: 175,
+                        b: 67,
+                        a: 1
+                    }
                 }
             }))
             .addObject(new Object3D({
@@ -123,7 +130,13 @@ class CastleScene extends Scene {
                 ),
                 options: {
                     drawPoints: false,
-                    drawNormals: false
+                    drawNormals: false,
+                    rgbaColor: {
+                        r: 255,
+                        g: 175,
+                        b: 67,
+                        a: 1
+                    }
                 }
             }))
             .addObject(new Object3D({
@@ -140,7 +153,13 @@ class CastleScene extends Scene {
                 ),
                 options: {
                     drawPoints: false,
-                    drawNormals: false
+                    drawNormals: false,
+                    rgbaColor: {
+                        r: 255,
+                        g: 175,
+                        b: 67,
+                        a: 1
+                    }
                 }
             }))
             .addObject(new Object3D({
@@ -157,8 +176,18 @@ class CastleScene extends Scene {
                 ),
                 options: {
                     drawPoints: false,
-                    drawNormals: false
+                    drawNormals: false,
+                    rgbaColor: {
+                        r: 255,
+                        g: 175,
+                        b: 67,
+                        a: 1
+                    }
                 }
+            }))
+            .addLight(new SpotLight({
+                id: 'light1',
+                position: new Point(0, 1500, -1400)
             }));
     }
 
@@ -170,7 +199,13 @@ class CastleScene extends Scene {
                 geometry: new RegularPrism(dimension.h, dimension.w, dimension.d),
                 options: {
                     drawPoints: false,
-                    drawNormals: false
+                    drawNormals: false,
+                    rgbaColor: {
+                        r: 255,
+                        g: 193,
+                        b: 7,
+                        a: 1
+                    }
                 }
             }))
             .addObject(new Object3D({
@@ -179,7 +214,13 @@ class CastleScene extends Scene {
                 geometry: new PyramidSquare(dimension.h, dimension.w, dimension.d),
                 options: {
                     drawPoints: false,
-                    drawNormals: false
+                    drawNormals: false,
+                    rgbaColor: {
+                        r: 244,
+                        g: 67,
+                        b: 54,
+                        a: 1
+                    }
                 }
             }));
 

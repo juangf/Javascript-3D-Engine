@@ -37,10 +37,10 @@ let camera = new FpCamera({
 
 let renderer = new Renderer(canvas, camera, homeScene);
 
-/*let renderFn = timestamp => {
+let renderFn = timestamp => {
     requestAnimationFrame(renderFn);
     renderer.render();
-};*/
+};
 renderer.render();
 
 window.onkeydown = (e => {
@@ -81,15 +81,27 @@ window.onkeydown = (e => {
             updateScene(cameraPosition);
             break;
         case KEY_1:
+            cameraPosition.setCoords(DEFAULT_CAMERA_POINT.x, DEFAULT_CAMERA_POINT.y, DEFAULT_CAMERA_POINT.z);
+            camera.setYaw(0);
+            camera.setPitch(0);
             renderer.setScene(homeScene).render();
             break;
         case KEY_2:
+            cameraPosition.setCoords(390, 300, -400);
+            camera.setYaw(-2.18);
+            camera.setPitch(0.5);
             renderer.setScene(wavesScene).render();
             break;
         case KEY_3:
+            cameraPosition.setCoords(810, 1080, -1990);
+            camera.setYaw(-0.37);
+            camera.setPitch(0.38);
             renderer.setScene(castleScene).render();
             break;
         case KEY_4:
+            cameraPosition.setCoords(0, 300, -300);
+            camera.setYaw(0);
+            camera.setPitch(0.38);
             renderer.setScene(testLoadScene).render();
             break;
     }
@@ -105,20 +117,6 @@ document.onmousemove =(e => {
     let beta = Utils.degToRad((percY - 0.5) * 360);
     camera.setYaw(alpha);
     camera.setPitch(beta);
-    renderer.render();
 });
 
-let alpha = 0;
-let radius = 600;
-let light = homeScene.getLight('light1');
-
-let renderFn = timestamp => {
-    requestAnimationFrame(renderFn);
-    alpha += 15;
-    if (alpha > 360) {
-        alpha -= 360;
-    }
-    light.setPosition(new Point(Math.cos(alpha * Math.PI / 180) * radius, 500, Math.sin(alpha * Math.PI / 180) * radius));
-    renderer.render();
-}
 renderFn();

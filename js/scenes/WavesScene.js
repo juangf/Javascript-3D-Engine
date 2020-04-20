@@ -3,6 +3,7 @@ import Object3D from "../engine/Object3D.js";
 import Point from "../engine/Point.js";
 import Utils from "../engine/Utils.js";
 import Plane from "../geometries/Plane.js";
+import SpotLight from "../engine/Light/SpotLight.js";
 
 /**
  * Scene with a castle.
@@ -20,13 +21,24 @@ class WavesScene extends Scene {
 
         this.addObject(new Object3D({
             id: 'plane1',
-            position: new Point(-size / 2, 200, 0),
+            position: new Point(-size / 2, 200, -1500),
             geometry: new Plane(size, this.spaces),
             options: {
+                rgbaColor: {
+                    r: 100,
+                    g: 100,
+                    b: 255,
+                    a: 1
+                },
                 drawPoints: false,
                 drawNormals: false
             }
         }))
+        .addLight(new SpotLight({
+            id: 'light1',
+            position: new Point(0, 500, 500)
+        }));
+        
         this.alpha = 0;
         let obj = this.getObject('plane1');
         this.points = obj.getGeometry().getPoints();

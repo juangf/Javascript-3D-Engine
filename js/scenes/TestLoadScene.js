@@ -1,4 +1,6 @@
 import Scene from "../engine/Scene.js";
+import Point from "../engine/Point.js";
+import SpotLight from "../engine/Light/SpotLight.js";
 
 // Objects.
 import Generate from '../engine/reader/Generate.js';
@@ -23,6 +25,10 @@ class TestLoadScene extends Scene {
         this.addObject(icosahedron);
         this.addObject(teapot);
         this.addObject(shuttle);
+        this.addLight(new SpotLight({
+            id: 'light1',
+            position: new Point(0, 500, 0)
+        }));
     }
 }
 

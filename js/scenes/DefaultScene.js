@@ -108,8 +108,17 @@ class DefaultScene extends Scene
                 id: 'light1',
                 position: new Point(0, 500, 0)
             }))
+
+        this.alpha = 0;
+        this.radius = 600;
+        this.light = this.getLight('light1');
     }
     beforeRender() {
+        this.alpha += 15;
+        if (this.alpha > 360) {
+            this.alpha -= 360;
+        }
+        this.light.setPosition(new Point(Math.cos(this.alpha * Math.PI / 180) * this.radius, 500, Math.sin(this.alpha * Math.PI / 180) * this.radius));
         return this;
     }
 }

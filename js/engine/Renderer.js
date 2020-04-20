@@ -23,6 +23,7 @@ class Renderer {
 
     setScene(scene) {
         this.scene = scene;
+        this.objectsLoaded = false;
         return this;
     }
 
