@@ -49,7 +49,7 @@ class DefaultScene extends Scene
             .addObject(new Object3D({
                 id: 'sphere1',
                 position: new Point(440, 900, 500),
-                geometry: new Sphere(200, 20),
+                geometry: new Sphere(200, 20, false),
                 options: {
                     rgbaColor: {
                         r: 100,
@@ -63,7 +63,7 @@ class DefaultScene extends Scene
             .addObject(new Object3D({
                 id: 'sphere2',
                 position: new Point(-380, 400, 100),
-                geometry: new Sphere(100, 20),
+                geometry: new Sphere(100, 20, false),
                 options: {
                     rgbaColor: {
                         r: 255,
