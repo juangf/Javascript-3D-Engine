@@ -1,3 +1,5 @@
+import Point from './Point.js';
+
 class Utils {
     static degToRad(alpha) {
         return alpha * Math.PI / 180;
