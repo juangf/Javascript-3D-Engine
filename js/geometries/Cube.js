@@ -19,8 +19,8 @@ class Cube extends RegularPrism {
      *
      * @param {number} size
      */
-    constructor(size) {
-        super(size, size, size);
+    constructor(size, allTriangles = true) {
+        super(size, size, size, allTriangles);
     }
 }
 

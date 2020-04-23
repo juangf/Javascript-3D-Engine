@@ -35,7 +35,7 @@ class DefaultScene extends Scene
             .addObject(new Object3D({
                 id: 'cube1',
                 position: new Point(0, 150, 300),
-                geometry: new Cube(300),
+                geometry: new Cube(300, false),
                 options: {
                     rgbaColor: {
                         r: 255,
