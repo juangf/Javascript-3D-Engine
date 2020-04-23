@@ -25,6 +25,8 @@ class Cone extends Geometry {
 
         this.addPolygon(new Polygon([0, index + 1, 2]));
         this.addPolygon(new Polygon([1, 2, index + 1]));
+
+        this.calcNormals();
     }
 }
 

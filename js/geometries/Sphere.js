@@ -89,6 +89,8 @@ class Sphere extends Geometry {
         }
 
         this.addPolygon(new Polygon([startInd, index - 1, startInd - 1]));
+
+        this.calcNormals();
     }
 }
 

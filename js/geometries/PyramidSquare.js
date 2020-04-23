@@ -29,6 +29,8 @@ class PyramidSquare extends Geometry {
             .addPolygon(new Polygon([0, 3, 2]))
             .addPolygon(new Polygon([0, 4, 3]))
             .addPolygon(new Polygon([0, 1, 4]));
+        
+        this.calcNormals();
     }
 }
 

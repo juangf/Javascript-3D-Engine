@@ -16,6 +16,8 @@ class Plane extends Geometry {
                 }
             }
         }
+
+        this.calcNormals();
     }
 }
 

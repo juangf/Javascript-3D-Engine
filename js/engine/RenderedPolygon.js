@@ -2,6 +2,7 @@ class RenderedPolygon {
     constructor(points = [], options = {}) {
         this.points = points;
         this.pointsIndexs = [];
+        this.normal = null;
         this.options = Object.assign({
             drawPoints: false,
             drawNormals: false,
@@ -35,6 +36,15 @@ class RenderedPolygon {
     setOptions(options) {
         this.options = Object.assign(this.options, options);
         return this;
+    }
+
+    setNormal(normal) {
+        this.normal = normal;
+        return this;
+    }
+
+    getNormal() {
+        return this.normal;
     }
 }
 

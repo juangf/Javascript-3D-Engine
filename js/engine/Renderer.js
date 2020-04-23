@@ -164,14 +164,15 @@ class Renderer {
                 renderedPoly.addPointIndex(indexs[i]);
             }
         }
+
+        renderedPoly.setNormal(polygon.getNormal());
         
         return renderedPoly;
     }
 
-    lightFn(p0, p1, p2, objPos, pL){
-        let vN = this.getNormal(p0, p1, p2);
+    lightFn(normal, p0, objPos, pL){
         let vOL = Point.substract(Point.add(p0, objPos), pL);
-        let alpha = Point.angleBetween(vOL, vN) * 180 / Math.PI;
+        let alpha = Point.angleBetween(vOL, normal) * 180 / Math.PI;
 
         return alpha * 255 / 90;
     }
@@ -206,9 +207,8 @@ class Renderer {
                 for (let [id, light] of Object.entries(lights)) {
                     let indexs = p.getIndexs();
                     let temp = this.lightFn(
+                        p.getNormal(),
                         points[indexs[0]],
-                        points[indexs[1]],
-                        points[indexs[2]],
                         pos,
                         light.getPosition()
                     );

@@ -37,6 +37,8 @@ class RegularPrism extends Geometry {
             .addPolygon(new Polygon([1, 4, 7, 2]))
             .addPolygon(new Polygon([5, 4, 1, 0]))
             .addPolygon(new Polygon([3, 2, 7, 6]));
+
+        this.calcNormals();
     }
 }
 

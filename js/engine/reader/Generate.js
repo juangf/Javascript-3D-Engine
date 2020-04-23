@@ -65,6 +65,7 @@ class Generate {
 
         this.obj = obj;
         this.createObject();
+        this.object.calcNormals();
 
         return new Object3D({
             id: this.obj.name,
