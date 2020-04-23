@@ -36,7 +36,15 @@ class WavesScene extends Scene {
         }))
         .addLight(new SpotLight({
             id: 'light1',
-            position: new Point(0, 500, -850)
+            position: new Point(0, 300, -800),
+            options: {
+                rgbaColor: {
+                    r: 255,
+                    g: 255,
+                    b: 255,
+                    a: 0.3
+                }
+            }
         }));
         
         this.alpha = 0;
@@ -47,9 +55,9 @@ class WavesScene extends Scene {
     }
     beforeRender() {
         if (this.alpha > 360) {
-            this.alpha = 0;
+            this.alpha -= 360;
         } else {
-            this.alpha += 3;
+            this.alpha += 4;
         }
         
         for (let i = 0; i <= this.spaces; i++) {
