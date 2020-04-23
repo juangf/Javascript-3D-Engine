@@ -36,7 +36,7 @@ class WavesScene extends Scene {
         }))
         .addLight(new SpotLight({
             id: 'light1',
-            position: new Point(0, 500, 500)
+            position: new Point(0, 500, -850)
         }));
         
         this.alpha = 0;
