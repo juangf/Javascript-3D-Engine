@@ -67,7 +67,7 @@ class Renderer {
     }
 
     drawNormal(p0, p1, p2) {
-        let pDir = Point.multiply(this.getNormal(p0, p1, p2), 50);
+        let pDir = Point.multiply(this.getNormal(p0, p1, p2), 30);
         let p = Point.multiply(Point.add(Point.add(p0, p1), p2), 0.33333);
 
         this.ctx.beginPath();
@@ -76,6 +76,24 @@ class Renderer {
             this.projection('y', p.getY(), p.getZ())
         );
         this.ctx.strokeStyle = '#FF0000';
+        this.ctx.lineTo(
+            this.projection('x', p.getX() + pDir.getX(), p.getZ() + pDir.getZ()),
+            this.projection('y', p.getY() + pDir.getY(), p.getZ() + pDir.getZ())
+        );
+        this.ctx.stroke();
+        this.ctx.strokeStyle = '#000000';
+        return this;
+    }
+
+    drawVertexNormal(p, normal) {
+        let pDir = Point.multiply(normal, 30);
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(
+            this.projection('x', p.getX(), p.getZ()),
+            this.projection('y', p.getY(), p.getZ())
+        );
+        this.ctx.strokeStyle = '#0000FF';
         this.ctx.lineTo(
             this.projection('x', p.getX() + pDir.getX(), p.getZ() + pDir.getZ()),
             this.projection('y', p.getY() + pDir.getY(), p.getZ() + pDir.getZ())
@@ -109,9 +127,11 @@ class Renderer {
                     this.projection('y', p.getY(), p.getZ())
                 );
             });
+
             this.ctx.closePath();
             this.ctx.strokeStyle = options.rgbaColor;
             this.ctx.stroke();
+
             if (!options.wireFrame) {
                 this.ctx.fillStyle = options.rgbaColor;
                 this.ctx.fill();
@@ -126,6 +146,12 @@ class Renderer {
             
             if (options.drawNormals) {
                 this.drawNormal(points[0], points[1], points[2]);
+            }
+
+            if (options.drawVertexNormals) {
+                points.forEach(p => {
+                    this.drawVertexNormal(p, p.getNormal());
+                });
             }
         });
         return this;
@@ -158,6 +184,8 @@ class Renderer {
                 return null;
             }
 
+            p.setNormal(Point.multiplyMatrix(Point.substract(points[indexs[i]].getNormal(), camera.getPosition()), transformsMatrix));
+            
             renderedPoly.addPoint(p);
 
             if (options.drawPoints) {
@@ -193,9 +221,10 @@ class Renderer {
         polygons.forEach(p => {
             let renderedPoly = this.renderPolygon(camera, p, pos, points, transforms, transformsMatrix, options);
             if (renderedPoly) {
-                if (options.drawNormals || options.drawPoints) {
+                if (options.drawNormals || options.drawVertexNormals || options.drawPoints) {
                     renderedPoly.setOptions({
                         drawNormals: options.drawNormals,
+                        drawVertexNormals: options.drawVertexNormals,
                         drawPoints: options.drawPoints
                     });
                 }
@@ -208,7 +237,7 @@ class Renderer {
                     let indexs = p.getIndexs();
                     let temp = this.lightFn(
                         p.getNormal(),
-                        points[indexs[0]],
+                        Point.multiply(Point.add(Point.add(points[indexs[0]], points[indexs[1]]), points[indexs[2]]), 0.33333),
                         pos,
                         light.getPosition()
                     );

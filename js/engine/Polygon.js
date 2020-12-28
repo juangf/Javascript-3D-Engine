@@ -17,6 +17,10 @@ class Polygon {
     getNormal() {
         return this.normal;
     }
+
+    hasIndex(index) {
+        return this.indexs.indexOf(index) > -1;
+    }
 }
 
 export default Polygon;

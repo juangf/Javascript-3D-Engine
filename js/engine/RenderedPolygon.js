@@ -6,6 +6,7 @@ class RenderedPolygon {
         this.options = Object.assign({
             drawPoints: false,
             drawNormals: false,
+            drawVertexNormals: false,
             wireFrame: false,
             rgbaColor: ''
         }, options);

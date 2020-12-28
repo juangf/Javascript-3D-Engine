@@ -5,6 +5,7 @@ class Point {
         this.y = y;
         this.z = z;
         this.w = w; // If the Vector is director, w = 0
+        this.normal = null; // If it is a geometry vertex, it stores the calculated vertex normal
     }
 
     setCoords(x, y, z, w = 1) {
@@ -29,6 +30,15 @@ class Point {
 
     getZ() {
         return this.z;
+    }
+
+    setNormal(normal) {
+        this.normal = normal;
+        return this;
+    }
+
+    getNormal() {
+        return this.normal;
     }
 
     static add(p1, p2) {

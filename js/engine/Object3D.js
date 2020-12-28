@@ -11,6 +11,7 @@ class Object3D {
             drawPoints: false,
             backfaceCulling: true,
             drawNormals: false,
+            drawVertexNormals: false,
             wireFrame: false,
             rgbaColor: {
                 r: 180,
