@@ -3,7 +3,7 @@ import Polygon from '../engine/Polygon.js';
 import Geometry from '../engine/Geometry.js';
 
 class Sphere extends Geometry {
-    constructor(radius, space, allTriangles = true) {
+    constructor(radius, space, allTriangles = false) {
         super();
         let index = 0;
         let startInd = 0;
