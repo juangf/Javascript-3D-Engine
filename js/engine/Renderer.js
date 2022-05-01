@@ -59,16 +59,16 @@ class Renderer {
         return this;
     }
 
-    getNormal(p0, p1, p2) {
-        let ab1 = Point.substract(p1, p2);
-        let ab2 = Point.substract(p1, p0);
-        let ab1xab2 = Point.dotProduct(ab1, ab2);
-        return Point.normalize(ab1xab2);
-    }
+    drawNormal(poly) {
+        let pDir = Point.multiply(poly.getNormal(), 30);
+        let points = poly.getPoints();
+        let p = Point.add(Point.add(points[0], points[1]), points[2]);
 
-    drawNormal(p0, p1, p2) {
-        let pDir = Point.multiply(this.getNormal(p0, p1, p2), 30);
-        let p = Point.multiply(Point.add(Point.add(p0, p1), p2), 0.33333);
+        if (points.length === 4) {
+            p = Point.multiply(Point.add(p, points[3]), 0.25);
+        } else {
+            p = Point.multiply(p, 0.33333);
+        }
 
         this.ctx.beginPath();
         this.ctx.moveTo(
@@ -145,7 +145,7 @@ class Renderer {
             }
             
             if (options.drawNormals) {
-                this.drawNormal(points[0], points[1], points[2]);
+                this.drawNormal(poly);
             }
 
             if (options.drawVertexNormals) {
@@ -193,7 +193,7 @@ class Renderer {
             }
         }
 
-        renderedPoly.setNormal(polygon.getNormal());
+        renderedPoly.setNormal(Point.multiplyMatrix(Point.substract(polygon.getNormal(), camera.getPosition()), transformsMatrix));
         
         return renderedPoly;
     }
